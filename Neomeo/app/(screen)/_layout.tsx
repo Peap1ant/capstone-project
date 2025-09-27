@@ -1,9 +1,10 @@
 import { Tabs } from 'expo-router';
+import { StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabsLayout() {
     return (
-        <Tabs screenOptions = {{ tabBarActiveTintColor: '#5d26f3', headerShown: false}}>
+        <Tabs screenOptions = {{ tabBarActiveTintColor: '#5d26f3', headerShown: false, tabBarStyle: {height: 100, paddingBottom: 30}}}>
             <Tabs.Screen
                 name = '(home)/index'
                 options = {{
@@ -37,6 +38,15 @@ export default function TabsLayout() {
                     title: '더보기',
                     tabBarIcon: ({ color, focused }) => (
                         <Ionicons name = {focused ? 'apps': 'apps-outline'} color = { color } size = {24}/>
+                    ),
+                }}
+            />
+            <Tabs.Screen
+                name = '(test)/index'
+                options = {{
+                    title: '테스팅',
+                    tabBarIcon: ({ color, focused }) => (
+                        <Ionicons name = {focused ? 'build': 'build-outline'} color = { color } size = {24}/>
                     ),
                 }}
             />
