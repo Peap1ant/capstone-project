@@ -7,7 +7,7 @@ const App = () => {
     <SafeAreaProvider>
         <SafeAreaView style = {styles.container}>
             <Pressable style = {styles.Pressable}>
-                    <Text style = {styles.text}>test</Text>
+                <Text style = {styles.text}>test</Text>
             </Pressable>
             <ScrollView>
                <Pressable></Pressable>

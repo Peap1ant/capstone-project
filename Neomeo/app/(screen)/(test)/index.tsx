@@ -9,15 +9,15 @@ type test_item = {
 };
 
 const test_data: test_item[] = [
-  {id: '1', text: 'text 1'},
-  {id: '2', text: 'text 2'},
-  {id: '3', text: 'text 3'},
+    {id: '1', text: 'text 1'},
+    {id: '2', text: 'text 2'},
+    {id: '3', text: 'text 3'},
 ];
 
 const flat_render = ({ item }: { item: test_item }) => (
-  <View>
-    <Text>{item.text}</Text>
-  </View>
+    <View>
+        <Text>{item.text}</Text>
+    </View>
 );
 
 const App = () => {
