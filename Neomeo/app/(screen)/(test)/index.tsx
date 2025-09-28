@@ -24,7 +24,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
         <SafeAreaView style = {styles.container}>
-            <Pressable style = {styles.Pressable}>
+            <Pressable style = {[styles.Pressable, styles.content_center]}>
                     <Text style = {styles.text}>test</Text>
             </Pressable>
             <FlatList
