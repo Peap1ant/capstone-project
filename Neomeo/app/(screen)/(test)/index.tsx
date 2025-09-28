@@ -16,7 +16,7 @@ const test_data: test_item[] = [
 
 const flat_render = ({ item }: { item: test_item }) => (
     <View>
-        <Text>{item.text}</Text>
+        <Text  style = {styles.text}>{item.text}</Text>
     </View>
 );
 

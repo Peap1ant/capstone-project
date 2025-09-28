@@ -1,8 +1,10 @@
 import {StyleSheet} from 'react-native';
+import { NotoSansKR_400Regular } from '@expo-google-fonts/inter';
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
     },
     Pressable: {
@@ -16,8 +18,6 @@ export const styles = StyleSheet.create({
         fontSize: 30,
         margin: 10,
         textAlign: 'center',
-    },
-    text_test: {
-        fontSize: 2000,
-    },
+        fontFamily: NotoSansKR_400Regular
+    }
 });
