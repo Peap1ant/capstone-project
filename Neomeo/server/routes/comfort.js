@@ -2,30 +2,26 @@ const express = require("express");
 const router = express.Router();
 const ComfortMessage = require("../models/ComfortMessage");
 
-// ✅ 랜덤으로 글 하나 가져오기
+// 랜덤 글 가져오기
 router.get("/random", async (req, res) => {
   try {
-    const count = await ComfortMessage.countDocuments(); // 전체 글 개수
-    const randomIndex = Math.floor(Math.random() * count); // 랜덤 인덱스
-    const message = await ComfortMessage.findOne().skip(randomIndex); // 해당 인덱스 글 가져오기
-
-    res.json(message); // JSON 응답
-  } catch (error) {
-    res.status(500).json({ error: "서버 에러 발생" });
+    const count = await ComfortMessage.countDocuments(); // 총 몇 개 글이 있는지
+    const random = Math.floor(Math.random() * count);
+    const message = await ComfortMessage.findOne().skip(random); // 랜덤으로 하나 가져오기
+    res.json(message);
+  } catch (err) {
+    res.status(500).json({ error: "랜덤 메시지를 불러오지 못했어요." });
   }
 });
 
-// ✅ 새 글 추가 (테스트용)
+// 새 글 추가 (테스트용)
 router.post("/", async (req, res) => {
   try {
-    const newMessage = new ComfortMessage({
-      text: req.body.text,
-    });
-
+    const newMessage = new ComfortMessage({ text: req.body.text });
     await newMessage.save();
-    res.status(201).json(newMessage);
-  } catch (error) {
-    res.status(500).json({ error: "저장 실패" });
+    res.json(newMessage);
+  } catch (err) {
+    res.status(500).json({ error: "메시지를 저장하지 못했어요." });
   }
 });
 

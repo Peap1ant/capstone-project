@@ -1,16 +1,9 @@
 const mongoose = require("mongoose");
 
-// 위로 글 스키마 정의
-const comfortMessageSchema = new mongoose.Schema({
-  text: {
-    type: String,
-    required: true, // 글 내용은 반드시 있어야 함
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now, // 생성 시각 자동 기록
-  },
+// 스키마 정의 (DB에 들어가는 데이터 구조)
+const ComfortMessageSchema = new mongoose.Schema({
+  text: { type: String, required: true },  // 위로 글
 });
 
-const ComfortMessage = mongoose.model("ComfortMessage", comfortMessageSchema);
-module.exports = ComfortMessage;
+// 모델 생성
+module.exports = mongoose.model("ComfortMessage", ComfortMessageSchema);
