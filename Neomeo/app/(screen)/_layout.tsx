@@ -1,51 +1,52 @@
 import { Tabs } from 'expo-router';
+import { StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function TabLayout() {
+export default function TabsLayout() {
     return (
-        <Tabs screenOptions={{ tabBarActiveTintColor: '#53a8eb', headerShown: false, tabBarStyle: { height: 100, paddingBottom: 30 } }}>
+        <Tabs screenOptions = {{ tabBarActiveTintColor: '#53a8eb', headerShown: false, tabBarStyle: {height: 100, paddingBottom: 30}}}>
             <Tabs.Screen
-                name="(home)"
-                options={{
+                name = '(home)/index'
+                options = {{
                     title: '홈',
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
+                        <Ionicons name = {focused ? 'home-sharp': 'home-outline'} color = { color } size = {24}/>
                     ),
                 }}
             />
             <Tabs.Screen
-                name="(chat)"
-                options={{
+                name = '(chat)/index'
+                options = {{
                     title: '채팅',
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'chatbubble-sharp' : 'chatbubble-outline'} color={color} size={24} />
+                        <Ionicons name = {focused ? 'chatbubble-sharp': 'chatbubble-outline'} color = { color } size = {24}/>
                     ),
                 }}
             />
             <Tabs.Screen
-                name="(community)"
-                options={{
+                name = '(community)/index'
+                options = {{
                     title: '커뮤니티',
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline'} color={color} size={24} />
+                        <Ionicons name = {focused ? 'chatbox-ellipses': 'chatbox-ellipses-outline'} color = { color } size = {24}/>
                     ),
                 }}
             />
             <Tabs.Screen
-                name="(more)"
-                options={{
+                name = '(more)/index'
+                options = {{
                     title: '더보기',
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'apps' : 'apps-outline'} color={color} size={24} />
+                        <Ionicons name = {focused ? 'apps': 'apps-outline'} color = { color } size = {24}/>
                     ),
                 }}
             />
             <Tabs.Screen
-                name="(test)"
-                options={{
+                name = '(test)/index'
+                options = {{
                     title: '테스팅',
                     tabBarIcon: ({ color, focused }) => (
-                        <Ionicons name={focused ? 'build' : 'build-outline'} color={color} size={24} />
+                        <Ionicons name = {focused ? 'build': 'build-outline'} color = { color } size = {24}/>
                     ),
                 }}
             />

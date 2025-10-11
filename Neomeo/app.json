@@ -19,8 +19,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.jack5947.Neomeo"
+      "predictiveBackGestureEnabled": false
     },
     "web": {
       "output": "static",
@@ -46,12 +45,6 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "8e83428b-9c08-43e9-93bf-166f378590ee"
-      }
     }
   }
 }
