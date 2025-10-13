@@ -22,8 +22,8 @@ export default function LoginScreen() {
     }
   };
 
-  const handleSocialLogin = (type: string) => {
-    Alert.alert('알림', `[${type}] 소셜 로그인은 추후 구현될 기능입니다.`);
+  const handleSocialLogin = () => {
+    Alert.alert('알림', `소셜 로그인은 추후 구현될 기능입니다.`);
   };
 
   return (
@@ -73,17 +73,9 @@ export default function LoginScreen() {
         </Link>
 
         <View style={styles.authSocialLoginContainer}>
-            <TouchableOpacity style={styles.authSocialButton} onPress={() => handleSocialLogin('네이버')}>
-                <Ionicons name="newspaper-outline" size={20} color="#03C75A" style={styles.authSocialIcon} />
-                <Text style={styles.authSocialButtonText}>네이버로 시작하기</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.authSocialButton} onPress={() => handleSocialLogin('카카오')}>
-                <Ionicons name="chatbubble" size={20} color="#FEE500" style={styles.authSocialIcon} />
-                <Text style={styles.authSocialButtonText}>카카오로 시작하기</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.authSocialButton} onPress={() => handleSocialLogin('구글')}>
-                <Ionicons name="logo-google" size={20} color="#EA4335" style={styles.authSocialIcon} />
-                <Text style={styles.authSocialButtonText}>Google로 시작하기</Text>
+            <TouchableOpacity style={styles.authSocialButton} onPress={() => handleSocialLogin()}>
+                <Ionicons name="chatbubble-ellipses" size={20} color="#03C75A" style={styles.authSocialIcon} />
+                <Text style={styles.authSocialButtonText}>소셜 로그인하기</Text>
             </TouchableOpacity>
         </View>
       </View>

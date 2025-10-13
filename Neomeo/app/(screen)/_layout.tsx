@@ -5,7 +5,7 @@ export default function TabLayout() {
     return (
         <Tabs screenOptions={{ tabBarActiveTintColor: '#53a8eb', headerShown: false, tabBarStyle: { height: 100, paddingBottom: 30 } }}>
             <Tabs.Screen
-                name="(home)"
+                name="./home/index.tsx"
                 options={{
                     title: '홈',
                     tabBarIcon: ({ color, focused }) => (

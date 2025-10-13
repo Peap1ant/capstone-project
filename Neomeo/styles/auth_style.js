@@ -14,7 +14,7 @@ export const authStyles = StyleSheet.create({
     fontSize: 22,
     color: '#888',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 300,
   },
   authLogoText: {
     fontSize: 40,
