@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Pressable, Text, FlatList, View} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import {styles} from '../../../styles/test_style.js';
+import {styles} from '../../styles/test_style.js';
 
 type test_item = {
     id: string;

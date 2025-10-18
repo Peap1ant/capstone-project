@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "rea
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { LinkProps } from "expo-router";
-import {styles} from '../../../styles/test_style.js';
+import {styles} from '../../styles/test_style.js';
 
 const userData = {
 name: "안광현",
@@ -17,14 +17,7 @@ traits: [
 };
 
 const menuItems = [
-{ icon: "person-outline", label: "개인정보 관리", href: "/profile" },
-{ icon: "flag-outline", label: "챌린지", href: "/challenge" },
-{ icon: "compass-outline", label: "가까운 모임 찾기", href: "/community" },
-{ icon: "medkit-outline", label: "근처 병원 찾기", href: "/hospital" },
-{ icon: "chatbubble-ellipses-outline", label: "위로되는 글", href: "/comfort" },
-{ icon: "lock-closed-outline", label: "고해성사 (익명)", href: "/confession" },
-{ icon: "people-outline", label: "동아리", href: "/club" },
-{ icon: "log-out-outline", label: "로그아웃", href: "/logout" }
+{ icon: "person-outline", label: "개인정보 관리", href: "/(profile)" },
 ];
 
 
