@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Pressable, Text, FlatList, View} from 'react-native';
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import {styles} from '../../styles/test_style.js';
+import SafeContainer from '../../../src/(components)/SafeContainer';
+import {styles} from '../../(styles)/test_style';
 
 type test_item = {
     id: string;
@@ -22,18 +22,16 @@ const flat_render = ({ item }: { item: test_item }) => (
 
 const App = () => {
   return (
-    <SafeAreaProvider>
-        <SafeAreaView style = {styles.container}>
-            <Pressable style = {[styles.Pressable, styles.content_center]}>
-                    <Text style = {styles.text}>test</Text>
-            </Pressable>
-            <FlatList
-                data = {test_data}
-                keyExtractor = {(item) => item.id}
-                renderItem = {flat_render}
-            />
-        </SafeAreaView>
-    </SafeAreaProvider>
+    <SafeContainer style = {styles.container}>
+        <Pressable style = {[styles.Pressable, styles.content_center]}>
+                <Text style = {styles.text}>test</Text>
+        </Pressable>
+        <FlatList
+            data = {test_data}
+            keyExtractor = {(item) => item.id}
+            renderItem = {flat_render}
+        />
+    </SafeContainer>
   );
 };
 

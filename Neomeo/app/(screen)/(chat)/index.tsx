@@ -1,20 +1,18 @@
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, ScrollView} from 'react-native';
-import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import SafeContainer from '../../../src/(components)/SafeContainer';
 
 const App = () => {
   return (
-    <SafeAreaProvider>
-        <SafeAreaView style = {styles.container}>
-            <Pressable style = {styles.Pressable}>
-                <Text style = {styles.text}>test</Text>
-            </Pressable>
-            <ScrollView>
-               <Pressable></Pressable>
-            </ScrollView>
-        </SafeAreaView>
-    </SafeAreaProvider>
-  );
+    <SafeContainer style = {styles.container}>
+        <Pressable style = {styles.Pressable}>
+            <Text style = {styles.text}>test</Text>
+        </Pressable>
+        <ScrollView>
+            <Pressable></Pressable>
+        </ScrollView>
+    </SafeContainer>
+    );
 };
 
 const styles = StyleSheet.create({
