@@ -26,14 +26,11 @@ export default function MoreScreen() {
 return (
     <SafeContainer>
         <ScrollView style={styles.container}>
-        {/* 1. 프로필 */}
         <View style={styles.profileSection}>
             <Image source={userData.profileImage} style={styles.profileImage} />
             <Text style={styles.profileName}>{userData.name}</Text>
             <Text style={styles.profileLocation}>{userData.location}</Text>
         </View>
-
-        {/* 2. 성향 카드 */}
         <View style={styles.cardContainer}>
             {userData.traits.map((trait, index) => (
             <View key={index} style={styles.card}>
@@ -42,8 +39,6 @@ return (
             </View>
             ))}
         </View>
-
-        {/* 3. 메뉴 */}
         <View style={styles.menuList}>
             {menuItems.map((item, index) => (
             <MenuItem key={index} icon={item.icon} label={item.label} href={item.href} />
@@ -54,7 +49,6 @@ return (
 );
 }
 
-// ✅ 메뉴 아이템 컴포넌트
 function MenuItem({ icon, label, href }: { icon: any; label: string; href: any }) {
 return (
     <Link href={href} asChild>
