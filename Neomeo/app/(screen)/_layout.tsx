@@ -1,5 +1,5 @@
-import { Tabs } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { Tabs, Stack } from 'expo-router'
+
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabsLayout() {

@@ -1,20 +1,12 @@
-import { View, Text } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import {styles} from '../../../styles/test_style.js';
+import { Text } from 'react-native';
+import SafeContainer from '../../../src/(components)/SafeContainer';
+import { styles } from '../../(styles)/test_style';
 
-export function HomeScreen() {
-    const insets = useSafeAreaInsets();
+export default function HomeScreen() {
     return (
-        <View style = {styles.container}>
+        <SafeContainer>
             <Text style = {styles.text}> Tab community</Text>
-        </View>
+        </SafeContainer>
     );
 }
 
-export default function App() {
-    return(
-        <SafeAreaProvider>
-            <HomeScreen />
-        </SafeAreaProvider>
-    );
-}
