@@ -9,7 +9,7 @@ import {styles} from '../../(styles)/test_style';
 const userData = {
 name: "야옹",
 location: "야~옹",
-profileImage: require('../../../assets/images/agh.jpg'), 
+profileImage: require('../../../assets/images/testing/profile.jpg'), 
 traits: [
     { title: "MBTI", value: "INTP" },
     { title: "성향", value: "내향적" },
@@ -52,7 +52,7 @@ return (
 function MenuItem({ icon, label, href }: { icon: any; label: string; href: any }) {
 return (
     <Link href={href} asChild>
-    <TouchableOpacity style={styles.menuItem}>
+    <TouchableOpacity style={styles.menuItemMovie}>
         <Ionicons name={icon} size={20} color="#555" style={{ marginRight: 10 }} />
         <Text style={styles.menuText}>{label}</Text>
     </TouchableOpacity>
