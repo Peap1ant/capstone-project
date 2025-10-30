@@ -1,5 +1,5 @@
 import { TouchableOpacity, View, Text, ScrollView, Image } from 'react-native';
-import SafeContainer from '../../../src/(components)/SafeContainer';
+import SafeScrollCenter from '../../../src/(components)/SafeScrollCenter';
 import {styles} from '../../(styles)/test_style';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -31,7 +31,7 @@ const community = [
 
 export default function HomeScreen() {
     return (
-        <SafeContainer style = {[styles.container, styles.content_center]}>
+        <SafeScrollCenter style = {styles.container}>
             <Text style = {styles.text}>현재 인기 있는 콘텐츠</Text>
                 <ScrollView style = {styles.movieContainer} horizontal = {true} contentContainerStyle = {styles.movieRow}>
                     {movie_recommend.map((item, index) => (
@@ -54,7 +54,7 @@ export default function HomeScreen() {
                         ))}
                 </View>
             </ScrollView>
-        </SafeContainer>
+        </SafeScrollCenter>
     );
 }
 
