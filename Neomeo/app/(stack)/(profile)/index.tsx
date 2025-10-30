@@ -5,7 +5,7 @@ import {styles} from '../../(styles)/main_style';
 export default function HomeScreen() {
     return (
         <SafeContainer style = {styles.container}>
-            <Text style = {styles.text}> Tab community</Text>
+            <Text style = {styles.text}>stack/profile/index.tsx</Text>
         </SafeContainer>
     );
 }
