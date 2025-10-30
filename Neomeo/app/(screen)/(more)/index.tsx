@@ -8,7 +8,7 @@ import {styles} from '../../(styles)/test_style';
 
 const userData = {
 name: "야옹",
-location: "야~옹",
+location: "야옹",
 profileImage: require('../../../assets/images/agh.jpg'), 
 traits: [
     { title: "MBTI", value: "INTP" },
