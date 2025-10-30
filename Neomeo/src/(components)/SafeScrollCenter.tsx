@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleProp, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { styles } from '../../app/(styles)/test_style';
+import { styles } from '../../app/(styles)/main_style';
 
 type Props = { style?: StyleProp<ViewStyle>; children: React.ReactNode };
 
