@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const more_tab_styles = StyleSheet.create({
     profileSection: { 
         alignItems: "center", paddingVertical: 20 
     },

@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 import SafeContainer from '../../../src/(components)/SafeContainer';
-import { styles } from '../../(styles)/test_style';
+import { styles } from '../../(styles)/main_style';
 
 export default function HomeScreen() {
     return (

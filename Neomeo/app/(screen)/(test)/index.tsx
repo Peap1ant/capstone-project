@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Pressable, Text, FlatList, View} from 'react-native';
 import SafeContainer from '../../../src/(components)/SafeContainer';
-import {styles} from '../../(styles)/test_style';
+import {styles} from '../../(styles)/main_style';
 
 type test_item = {
     id: string;
