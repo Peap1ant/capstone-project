@@ -1,6 +1,8 @@
 import { TouchableOpacity, View, Text, ScrollView, Image } from 'react-native';
 import SafeScrollCenter from '../../../src/(components)/SafeScrollCenter';
-import {styles} from '../../(styles)/test_style';
+import {styles} from '../../(styles)/main_style';
+import {more_tab_styles} from '../../(styles)/more_tab_style';
+import { home_tabstyles } from '@/app/(styles)/home_tab_style';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
@@ -33,22 +35,22 @@ export default function HomeScreen() {
     return (
         <SafeScrollCenter style = {styles.container}>
             <Text style = {styles.text}>현재 인기 있는 콘텐츠</Text>
-                <ScrollView style = {styles.movieContainer} horizontal = {true} contentContainerStyle = {styles.movieRow}>
+                <ScrollView style = {home_tabstyles.movieContainer} horizontal = {true} contentContainerStyle = {home_tabstyles.movieRow}>
                     {movie_recommend.map((item, index) => (
                         <MoveiList key = {index} name = {item.name} Thumbnail = {item.Thumbnail} href = {item.href} />
                     ))}
                 </ScrollView>
-            <ScrollView stickyHeaderIndices={[1]} style = {styles.homeContainer} scrollEnabled = {false}>
+            <ScrollView stickyHeaderIndices={[1]} style = {home_tabstyles.homeContainer} scrollEnabled = {false}>
                 <Text style = {styles.text}>공지</Text>
-                <View style = {styles.menuList}>
+                <View style = {more_tab_styles.menuList}>
                         {announcement.map((item, index) => (
                             <ContentList key = {index} icon = {item.icon} label = {item.label} href = {item.href} />
                         ))}
                 </View>
             </ScrollView>
-            <ScrollView stickyHeaderIndices={[1]} style = {styles.homeContainer} scrollEnabled = {false}>
+            <ScrollView stickyHeaderIndices={[1]} style = {home_tabstyles.homeContainer} scrollEnabled = {false}>
                 <Text style = {styles.text}>커뮤니티 글</Text>
-                <View style = {styles.menuList}>
+                <View style = {more_tab_styles.menuList}>
                         {community.map((item, index) => (
                             <ContentList key = {index} icon = {item.icon} label = {item.label} href = {item.href} />
                         ))}
@@ -62,9 +64,9 @@ export default function HomeScreen() {
 function ContentList({ icon, label, href }: { icon: any; label: string; href: any }) {
 return (
     <Link href={href} asChild>
-    <TouchableOpacity style={styles.homeMenuItem}>
+    <TouchableOpacity style={home_tabstyles.homeMenuItem}>
         <Ionicons name={icon} size={20} color='#000000' style={{ marginRight: 10 }} />
-        <Text style={styles.menuText}>{label}</Text>
+        <Text style={more_tab_styles.menuText}>{label}</Text>
     </TouchableOpacity>
     </Link>
 );
@@ -74,9 +76,9 @@ return (
 function MoveiList({ name, Thumbnail, href }: { name: string; Thumbnail: any; href: any }) {
 return (
     <Link href={href} asChild>
-    <TouchableOpacity style={styles.menuItemMovie}>
-        <Image source = {Thumbnail} style = {styles.moveThumbnail}></Image>
-        <Text numberOfLines={3} style={styles.menuText}>{name}</Text>
+    <TouchableOpacity style={home_tabstyles.menuItemMovie}>
+        <Image source = {Thumbnail} style = {home_tabstyles.moveThumbnail}></Image>
+        <Text numberOfLines={3} style={more_tab_styles.menuText}>{name}</Text>
     </TouchableOpacity>
     </Link>
 );
