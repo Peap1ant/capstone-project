@@ -7,12 +7,11 @@
         "./*"
       ]
     },
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "app/(styles)/test_style.tsx"  ]
+    "app/(styles)/test_style.tsx"
+  ]
 }

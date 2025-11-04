@@ -10,7 +10,7 @@ import { more_tab_styles } from '../../(styles)/more_tab_style'
 const userData = {
 name: "야옹",
 location: "야옹",
-profileImage: require('../../../assets/images/agh.jpg'), 
+profileImage: require('../../../assets/images/testing/profile.jpg'), 
 traits: [
     { title: "MBTI", value: "INTP" },
     { title: "성향", value: "내향적" },
