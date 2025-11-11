@@ -7,7 +7,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function RootLayoutNav() {
-  const { isAuthenticated, isAuthReady } = useAuth();   // 👈 인증 준비 플래그 필요
+  const { isAuthenticated, isAuthReady } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 

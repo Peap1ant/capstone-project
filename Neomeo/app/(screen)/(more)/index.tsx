@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "rea
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { LinkProps } from "expo-router";
-import SafeContainer from '../../../src/(components)/SafeContainer';
+import SafeScroll from '../../../src/(components)/SafeScroll';
 import { styles } from '../../(styles)/main_style';
 import { more_tab_styles } from '../../(styles)/more_tab_style'
 
@@ -25,7 +25,7 @@ const menuItems = [
 
 export default function MoreScreen() {
 return (
-    <SafeContainer>
+    <SafeScroll>
         <ScrollView style={styles.container}>
         <View style={more_tab_styles.profileSection}>
             <Image source={userData.profileImage} style={more_tab_styles.profileImage} />
@@ -46,17 +46,17 @@ return (
             ))}
         </View>
         </ScrollView>
-    </SafeContainer>
+    </SafeScroll>
 );
 }
 
 function MenuItem({ icon, label, href }: { icon: any; label: string; href: any }) {
-return (
-    <Link href={href} asChild>
-    <TouchableOpacity style={more_tab_styles.menuItem}>
-        <Ionicons name={icon} size={20} color="#555" style={{ marginRight: 10 }} />
-        <Text style={more_tab_styles.menuText}>{label}</Text>
-    </TouchableOpacity>
-    </Link>
-);
+    return (
+        <Link href={href} asChild>
+        <TouchableOpacity style={more_tab_styles.menuItem}>
+            <Ionicons name={icon} size={20} color="#555" style={{ marginRight: 10 }} />
+            <Text style={more_tab_styles.menuText}>{label}</Text>
+        </TouchableOpacity>
+        </Link>
+    );
 }

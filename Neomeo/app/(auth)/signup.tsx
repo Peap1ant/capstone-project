@@ -69,6 +69,17 @@ export default function SignUpScreen() {
         </View>
 
         <View style={styles.authInputContainer}>
+        <Ionicons name="person-outline" size={20} color="#888" style={styles.authInputIcon} />
+        <TextInput
+            style={styles.authInput}
+            placeholder="닉네임"
+            placeholderTextColor="#AAA"
+            value={nickname}
+            onChangeText={setNickname}
+        />
+        </View>
+
+        <View style={styles.authInputContainer}>
         <Ionicons name="mail-outline" size={20} color="#888" style={styles.authInputIcon} />
         <TextInput
             style={styles.authInput}
@@ -90,17 +101,6 @@ export default function SignUpScreen() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-        />
-        </View>
-
-        <View style={styles.authInputContainer}>
-        <Ionicons name="lock-closed-outline" size={20} color="#888" style={styles.authInputIcon} />
-        <TextInput
-            style={styles.authInput}
-            placeholder="닉네임"
-            placeholderTextColor="#AAA"
-            value={nickname}
-            onChangeText={setNickname}
         />
         </View>
         
