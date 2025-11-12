@@ -10,10 +10,11 @@ const imageMap: Record<string, any> = {
     '5': require('../../../assets/images/testing/811-200x300.jpg')
 }
 
-export default function Page() {
-    const { id, title, content, imgKey } = useLocalSearchParams<{
+export default function page() {
+    const { title, category, content, imgKey } = useLocalSearchParams<{
         id: string,
         title: string,
+        category: string,
         content: string,
         imgKey: string
     }>();
@@ -22,19 +23,19 @@ export default function Page() {
 
     return(
         <SafeScroll>
-            <View style = {page_style.titleContainer}>
-                <Text style = {page_style.title}>[{id}] {title}</Text>
+            <View style = {community_page_style.titleContainer}>
+                <Text style = {community_page_style.title}>[{category}] {title}</Text>
             </View>
-            <View style = {page_style.contentContainer}>
+            <View style = {community_page_style.contentContainer}>
                 <Image source = {imgSource} />
-                <View style = {page_style.contentSeperator} />
+                <View style = {community_page_style.contentSeperator} />
                 <Text>{content}</Text>
             </View>
         </SafeScroll>
     )
 }
 
-const page_style = StyleSheet.create({
+const community_page_style = StyleSheet.create({
     title: {
         fontSize: 20
     },

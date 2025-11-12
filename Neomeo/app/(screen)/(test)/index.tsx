@@ -1,14 +1,16 @@
 import { Text, TouchableOpacity, View, Image, StyleSheet } from 'react-native';
 import SafeContainer from '../../../src/(components)/SafeContainer';
 import SafeScroll from '@/src/(components)/SafeScroll';
+import { communityStyle } from '@/app/(styles)/community_style';
 import { Link } from 'expo-router';
 
+// real data contains title, category, content, attachments: img 
 const dummy_data = [
-    { id: '1', title: 'title test 1', content: 'content\ntesting all things as i can!\ncan you see this?', imgKey: '1' },
-    { id: '2', title: 'title test 2', content: 'content\n\n\n\n\ntesting for long content',imgKey: '2' },
-    { id: '3', title: 'title test 3', content: 'content', imgKey: '3' },
-    { id: '4', title: 'title test 4', content: 'content', imgKey: '4' },
-    { id: '5', title: 'title test 5', content: 'this content is REALLY LONG!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhy are you here?', imgKey: '5' }
+    { id: '1', title: 'title test 1', category: 'test', content: 'content\ntesting all things as i can!\ncan you see this?', imgKey: '1' },
+    { id: '2', title: 'title test 2', category: 'test' ,content: 'content\n\n\n\n\ntesting for long content',imgKey: '2' },
+    { id: '3', title: 'title test 3', category: 'test', content: 'content', imgKey: '3' },
+    { id: '4', title: 'title test 4', category: 'test', content: 'content', imgKey: '4' },
+    { id: '5', title: 'title test 5', category: 'test', content: 'this content is REALLY LONG!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nWhy are you here?', imgKey: '5' }
 ]
 
 const imageMap: Record<string, any> = {
@@ -22,14 +24,14 @@ const imageMap: Record<string, any> = {
 export default function HomeScreen() {
     return (
         <SafeContainer>
-            <View style = {styles.header}>
-                <Text style = {styles.headerText}>자유게시판</Text>
+            <View style = {communityStyle.header}>
+                <Text style = {communityStyle.headerText}>자유게시판</Text>
             </View>
             <View>{createContentBtn()}</View>
             <SafeScroll>
                 <View>
                     {dummy_data.slice().reverse().map((item, index) => (
-                        <CommunityItem key = {index} id = {item.id} title = {item.title} content = {item.content} imgKey = {item.imgKey} />
+                        <CommunityItem key = {index} id = {item.id} title = {item.title} category = {item.category} content = {item.content} imgKey = {item.imgKey} />
                     ))}
                 </View>
             </SafeScroll>
@@ -37,23 +39,23 @@ export default function HomeScreen() {
     );
 }
 
-function CommunityItem({ id, title, content, imgKey }: { id: string; title: string; content: string; imgKey: string; }) {
+function CommunityItem({ id, title, category, content, imgKey }: { id: string; title: string; category: string; content: string; imgKey: string; }) {
     
     const imgSource = imageMap[imgKey]
     
     return (
         <Link key = {id} href = {{ 
             pathname: '../../(stack)/(community)/[id]', 
-            params: { id, title, content, imgKey}
+            params: { title, category, content, imgKey}
             }} asChild>
-        <TouchableOpacity style = {styles.itemContainer}>
+        <TouchableOpacity style = {communityStyle.itemContainer}>
             <Text>글 번호: {id}</Text>
             <View>
-                <Text style = {styles.title}>{title}</Text>
-                <View style = {styles.rowContainer}>
-                    <Text style = {styles.content} numberOfLines = {3}>{content}</Text>
-                    <View style = {styles.imageContainer}>
-                        <Image source = {imgSource} style = {styles.image}/>
+                <Text style = {communityStyle.title}>[{category}] {title}</Text>
+                <View style = {communityStyle.rowContainer}>
+                    <Text style = {communityStyle.content} numberOfLines = {3}>{content}</Text>
+                    <View style = {communityStyle.imageContainer}>
+                        <Image source = {imgSource} style = {communityStyle.image}/>
                     </View>
                 </View>
             </View>
@@ -65,66 +67,9 @@ function CommunityItem({ id, title, content, imgKey }: { id: string; title: stri
 function createContentBtn() {
     return (
         <Link href = '../../(stack)/(community)/createContent' asChild>
-            <TouchableOpacity style = {styles.createContentBtn}>
-                <Text style = {styles.createContentBtnText}>게시물 만들기</Text>
+            <TouchableOpacity style = {communityStyle.createContentBtn}>
+                <Text style = {communityStyle.createContentBtnText}>게시물 만들기</Text>
             </TouchableOpacity>
         </Link>
     )
 }
-
-const styles = StyleSheet.create({
-    header: {
-        borderBottomWidth: 3,
-        borderColor: '#cccccc',
-        padding: 10,
-        paddingTop: 10,
-        justifyContent: 'center'
-    },
-    headerText: {
-        textAlign: 'center',
-        fontSize: 50
-    },
-    createContentBtn: {
-        padding: 20,
-        margin: 10,
-        borderWidth: 3,
-        borderColor: '#aaaaaa',
-        borderRadius: 10
-    },
-    createContentBtnText: {
-        textAlign: 'center',
-        fontSize: 20
-    },
-    itemContainer: {
-        borderWidth: 1,
-        borderColor: '#cccccc',
-        borderRadius: 10,
-        margin: 5,
-        padding: 10,
-        display: 'flex',
-        minHeight: 100
-    },
-    title: {
-        fontSize: 20,
-        alignSelf: 'flex-start'
-    },
-    rowContainer: {
-        flexDirection: 'row',
-        alignContent: 'center'
-    },
-    imageContainer: { 
-        width: 'auto',
-        height: 'auto'
-    },
-    image: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain'
-    },
-    content: {
-        flex: 1,
-        fontSize: 15,
-        color: '#AAAAAA',
-        alignSelf: 'flex-start'
-    }
-})
