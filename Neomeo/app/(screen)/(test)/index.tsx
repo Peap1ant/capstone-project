@@ -1,4 +1,4 @@
-import { Text, TouchableOpacity, View, Image, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View, Image } from 'react-native';
 import SafeContainer from '../../../src/(components)/SafeContainer';
 import SafeScroll from '@/src/(components)/SafeScroll';
 import { communityStyle } from '@/app/(styles)/community_style';

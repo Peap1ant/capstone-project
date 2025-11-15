@@ -3,9 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'reac
 import { Link, router, useRouter } from 'expo-router';
 import { authStyles as styles } from '../(styles)/auth_style';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import axios from 'axios';
-
-const BASE_URL = "http://localhost:8080";
+import { api } from '@/src/(api)/api';
 
 export default function SignUpScreen() {
     const router = useRouter();
@@ -29,9 +27,7 @@ export default function SignUpScreen() {
         else {
             console.log(`회원가입 시도, username ${username} email ${email} password ${password} nickname ${nickname}`);
             try {
-                const res = await axios.post(`${BASE_URL}/user`, json_field, {
-                    headers: { 'Content-Type': 'application/json' },
-                });
+                const res = await api.post('/user', json_field)
 
                 if (res.status === 200 || res.status === 201) {
                     Alert.alert('회원가입 성공', '로그인 화면으로 이동합니다.');
