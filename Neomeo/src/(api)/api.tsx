@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getToken, setToken} from '@/src/(api)/token'
+import { ALWAYS } from "expo-secure-store";
 
 export const api = axios.create({
     baseURL: 'http://localhost:8080',
@@ -12,10 +13,11 @@ export const api = axios.create({
 
 api.interceptors.request.use(
     async (config) => {
-        const accessToken = await getToken('accessToken');
+        const token = await getToken('accessToken')
 
-        if (accessToken) {
-            config.headers['token'] = accessToken;
+        if (token) {
+            config.headers = config.headers ?? {};
+            (config.headers as any).token = token;
         }
 
         return config;
@@ -30,30 +32,36 @@ api.interceptors.response.use(
     async (error) => {
         const { response, config } = error;
 
-        if (response?.status === 401) {
-            const refreshToken = await getToken('refreshToken');
+        if (!response) return Promise.reject(error);
 
+        if (
+            response.status === 401 && !config._retry && config.uri !== '/jwt/exchange'
+        ) {
+            config._retry = true;
+
+            const refreshToken = await getToken('refreshToken');
             if (!refreshToken) {
                 return Promise.reject(error);
             }
 
             try {
                 const { data } = await api.post('/jwt/exchange', {
-                    params: { token: refreshToken },
+                    token: refreshToken,
                 });
-                
-                const newAccess = data.accessToken;
+
+                const newAccess = data.accessToken
                 await setToken('accessToken', newAccess);
-                config.headers['token'] = newAccess;
+
+                config.headers = config.headers ?? {};
+                (config.headers as any).token = newAccess;
 
                 return api(config);
             } catch (refreshErr) {
-                return Promise.reject(refreshErr)
+                return Promise.reject(refreshErr);
             }
         }
-
         return Promise.reject(error);
-    }
+    },
 );
 
 export default api;
