@@ -10,7 +10,7 @@ export interface UserInfo {
 export function useUserData() {
     const [ userInfo, setUserInfo] = useState<UserInfo | null>(null);
     const [ error, setError ] = useState<string>('');
-    const [ loading, setLoding ] = useState<boolean>(true);
+    const [ loading, setLoading ] = useState<boolean>(true);
 
     useEffect (() => {
 
@@ -25,7 +25,7 @@ export function useUserData() {
                 console.log(err)
                 setError('유저 정보를 불러오지 못했습니다');
             } finally {
-                setLoding(false);
+                setLoading(false);
             }
         }
 
