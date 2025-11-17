@@ -16,14 +16,14 @@ export function useUserData() {
 
         const userInfo = async() => {
             try {
-                const res = await api.get('/user')
-                setUserInfo(res.data)
+                const { data } = await api.get('/user');
+                //setUserInfo(data);
 
-                console.log(res.data)
-                console.log('유저 정보 불러오기 완료')
+                console.log(data);
+                console.log('유저 정보 불러오기 완료');
             } catch (err) {
                 console.log(err)
-                setError('유저 정보를 불러오지 못했습니다');
+                setError('유저 정보를 불러오지 못했습니다.');
             } finally {
                 setLoading(false);
             }

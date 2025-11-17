@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getToken, setToken} from '@/src/(api)/token'
-import { ALWAYS } from "expo-secure-store";
 
 export const api = axios.create({
     baseURL: 'http://localhost:8080',
@@ -35,7 +34,7 @@ api.interceptors.response.use(
         if (!response) return Promise.reject(error);
 
         if (
-            response.status === 401 && !config._retry && config.uri !== '/jwt/exchange'
+            response.status === 401 && !config._retry
         ) {
             config._retry = true;
 

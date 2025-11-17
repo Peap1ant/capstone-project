@@ -23,7 +23,7 @@ export default function MoreScreen() {
     if (error || !userInfo) {
         return (
             <View>
-                <Text>{error || '유저 정보를 찾을 수 없습니다.'}</Text>
+                <Text>에러: {error || '유저 정보를 찾을 수 없습니다.'}</Text>
             </View>
         )
     }
