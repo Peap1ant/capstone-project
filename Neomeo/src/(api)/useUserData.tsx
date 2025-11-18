@@ -17,7 +17,7 @@ export function useUserData() {
         const userInfo = async() => {
             try {
                 const { data } = await api.get('/user');
-                //setUserInfo(data);
+                setUserInfo(data);
 
                 console.log(data);
                 console.log('유저 정보 불러오기 완료');
