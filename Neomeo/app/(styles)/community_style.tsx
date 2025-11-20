@@ -1,58 +1,152 @@
-import { StyleSheet } from "react-native"
+import { StyleSheet } from 'react-native';
 
 export const communityStyle = StyleSheet.create({
-    header: {
-        borderBottomWidth: 3,
-        borderColor: '#cccccc',
-        padding: 10,
-        paddingTop: 10,
-        justifyContent: 'center'
-    },
-    headerText: {
-        textAlign: 'center',
-        fontSize: 50
-    },
-    createContentBtn: {
-        padding: 20,
-        margin: 10,
-        borderWidth: 3,
-        borderColor: '#aaaaaa',
-        borderRadius: 10
-    },
-    createContentBtnText: {
-        textAlign: 'center',
-        fontSize: 20
-    },
-    itemContainer: {
-        borderWidth: 1,
-        borderColor: '#cccccc',
-        borderRadius: 10,
-        margin: 5,
-        padding: 10,
-        display: 'flex',
-        minHeight: 100
-    },
-    title: {
-        fontSize: 20,
-        alignSelf: 'flex-start'
-    },
-    rowContainer: {
+
+    newHeader: {
+        paddingTop: 20,
+        paddingBottom: 14,
+        paddingHorizontal: 16,
         flexDirection: 'row',
-        alignContent: 'center'
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
-    imageContainer: { 
-        width: 'auto',
-        height: 'auto'
+
+    newHeaderTitle: {
+        fontSize: 22,
+        fontWeight: 'bold'
     },
-    image: {
-        width: 100,
-        height: 100,
-        resizeMode: 'contain'
+
+    filterContainer: {
+        flexDirection: 'row',
+        paddingHorizontal: 14,
+        marginBottom: 12
     },
-    content: {
-        flex: 1,
-        fontSize: 15,
-        color: '#AAAAAA',
-        alignSelf: 'flex-start'
+
+    filterBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 20,
+        paddingVertical: 6,
+        paddingHorizontal: 14,
+        backgroundColor: '#f1f1f5',
+        marginRight: 8
+    },
+
+    filterText: {
+        marginLeft: 6,
+        fontSize: 14,
+        color: '#444'
+    },
+
+    filterBtnActive: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 20,
+        paddingVertical: 6,
+        paddingHorizontal: 14,
+        backgroundColor: '#7A6EFE',
+        marginRight: 8
+    },
+
+    filterTextActive: {
+        marginLeft: 6,
+        fontSize: 14,
+        color: 'white'
+    },
+
+    cardContainer: {
+        backgroundColor: 'white',
+        borderRadius: 16,
+        padding: 18,
+        marginBottom: 16,
+        elevation: 2,
+        shadowColor: '#00000040'
+    },
+
+    userRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 8
+    },
+
+    profileCircle: {
+        width: 34,
+        height: 34,
+        borderRadius: 17,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+
+    profileLetter: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+
+    userName: {
+        marginLeft: 10,
+        fontSize: 14,
+        fontWeight: 'bold'
+    },
+
+    dot: {
+        marginHorizontal: 6,
+        fontSize: 12,
+        color: '#777'
+    },
+
+    timeText: {
+        fontSize: 12,
+        color: '#777'
+    },
+
+    badge: {
+        backgroundColor: '#E0E2FF',
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: 10,
+        marginLeft: 8
+    },
+
+    badgeText: {
+        fontSize: 11,
+        color: '#4F56D6'
+    },
+
+    cardTitle: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        marginTop: 6,
+        marginBottom: 4
+    },
+
+    cardContent: {
+        fontSize: 14,
+        color: '#555',
+        marginBottom: 10
+    },
+
+    cardImage: {
+        width: '100%',
+        height: 160,
+        borderRadius: 12,
+        marginBottom: 10
+    },
+
+    iconRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 4
+    },
+
+    iconBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 16
+    },
+
+    iconText: {
+        marginLeft: 4,
+        fontSize: 14
     }
-})
+});
