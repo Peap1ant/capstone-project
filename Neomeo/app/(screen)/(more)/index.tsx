@@ -38,7 +38,7 @@ export default function MoreScreen() {
         traits: [
             { title: "MBTI", value: "INTP" },
             { title: "성향", value: "내향적" },
-            { title: "활동", value: "독서/코딩" },
+            { title: "활동", value: "독서 / 코딩" },
         ],
     };
 
