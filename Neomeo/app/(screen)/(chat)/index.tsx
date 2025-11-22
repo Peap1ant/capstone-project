@@ -1,89 +1,59 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import SafeContainer from '@/src/(components)/SafeContainer';
-import SafeScroll from '@/src/(components)/SafeScroll';
-import { chatListStyle } from '@/app/(styles)/chat_style';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { Link } from 'expo-router';
+import { chatStyle } from '@/app/(styles)/chat_style';
 
-// 더미 데이터 (API 연동 시 대체)
-const dummyChats = [
-    {
-        id: '1',
-        name: '익명 A',
-        time: '10:30',
-        message: '안녕하세요, 오늘 날씨가...',
-        color: '#8DC8FF',
-        online: true
-    },
-    {
-        id: '2',
-        name: '익명 B',
-        time: '09:15',
-        message: '같이 얘기하실 분 계신가...',
-        color: '#C29BFF',
-        online: false
-    },
-    {
-        id: '3',
-        name: '익명 C',
-        time: '어제',
-        message: '오늘 하루도 힘내세요!',
-        color: '#FF86A3',
-        online: true
-    },
-    {
-        id: '4',
-        name: '익명 D',
-        time: '어제',
-        message: '취미 생활 공유하고 싶어...',
-        color: '#63E2FF',
-        online: false
-    }
+const healMessages = [
+    "오늘도 잘 버티셨어요.",
+    "말하고 싶지 않다면 듣기만 해도 괜찮아요.",
+    "어떤 모습이어도 괜찮아요.",
+    "천천히 해도 돼요.",
 ];
 
-export default function ChatListScreen() {
-    return (
-        <SafeContainer>
+const dummyChat = [
+    { id: 'a', name: '익명 A', last: '안녕하세요, 오늘 날씨가...', time: '10:30', color: '#AFC6FF', online: true },
+    { id: 'b', name: '익명 B', last: '같이 얘기하실 분 계신가요?', time: '09:15', color: '#D2C1FF', online: false },
+    { id: 'c', name: '익명 C', last: '오늘 하루도 힘내세요!', time: '어제', color: '#FFAFBC', online: true },
+    { id: 'd', name: '익명 D', last: '취미 생활 공유하고 싶어요', time: '어제', color: '#8FE9FF', online: true },
+];
 
-            <View style={chatListStyle.header}>
-                <Text style={chatListStyle.title}>메시지</Text>
-                <Text style={chatListStyle.subtitle}>새로운 사람들과 연결되세요</Text>
+export default function ChatList() {
+    const healMessage = healMessages[Math.floor(Math.random() * healMessages.length)];
+
+    return (
+        <View style={chatStyle.container}>
+            <View style={chatStyle.header}>
+                <Text style={chatStyle.title}>메시지</Text>
+                <Text style={chatStyle.subtitle}>새로운 사람들과 연결되세요</Text>
             </View>
 
-            <SafeScroll>
-                <View style={{ paddingHorizontal: 16 }}>
+            <View style={chatStyle.healMessageBox}>
+                <Text style={chatStyle.healMessage}>{healMessage}</Text>
+            </View>
 
-                    {dummyChats.map(chat => (
-                        <Link
-                            key={chat.id}
-                            href={{ pathname: '../../(stack)/(chat)/[id]', params: { id: chat.id } }}
-                            asChild
-                        >
-                            <TouchableOpacity style={chatListStyle.card}>
-                                <View style={[chatListStyle.profileCircle, { backgroundColor: chat.color }]}>
-                                    <Text style={chatListStyle.profileLetter}>
-                                        {chat.name.charAt(0)}
-                                    </Text>
-                                </View>
+            <FlatList
+                data={dummyChat}
+                keyExtractor={(item) => item.id}
+                style={chatStyle.listWrapper}
+                renderItem={({ item }) => (
+                    <Link href={`/(stack)/(chat)/${item.id}`} asChild>
+                        <TouchableOpacity style={chatStyle.chatCard}>
+                            <View style={[chatStyle.profileCircle, { backgroundColor: item.color }]}>
+                                <Text style={chatStyle.profileText}>익</Text>
+                            </View>
 
-                                <View style={{ flex: 1 }}>
-                                    <View style={chatListStyle.row}>
-                                        <Text style={chatListStyle.name}>{chat.name}</Text>
-                                        <Text style={chatListStyle.time}>{chat.time}</Text>
-                                    </View>
+                            <View style={chatStyle.chatInfo}>
+                                <Text style={chatStyle.nickname}>{item.name}</Text>
+                                <Text numberOfLines={1} style={chatStyle.lastMessage}>{item.last}</Text>
+                            </View>
 
-                                    <View style={chatListStyle.row}>
-                                        <Text style={chatListStyle.message} numberOfLines={1}>
-                                            {chat.message}
-                                        </Text>
-                                        {chat.online && <View style={chatListStyle.onlineDot} />}
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        </Link>
-                    ))}
-
-                </View>
-            </SafeScroll>
-        </SafeContainer>
+                            <View style={chatStyle.timeArea}>
+                                <Text style={chatStyle.time}>{item.time}</Text>
+                                {item.online && <View style={chatStyle.onlineDot}></View>}
+                            </View>
+                        </TouchableOpacity>
+                    </Link>
+                )}
+            />
+        </View>
     );
 }

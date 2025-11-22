@@ -1,90 +1,107 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export const chatRoomStyle = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F5F7FA',
+    },
 
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingTop: 40,
+        paddingBottom: 14,
+        paddingHorizontal: 18,
+        backgroundColor: '#FFFFFF',
         borderBottomWidth: 1,
-        borderBottomColor: '#eee'
+        borderBottomColor: '#eee',
     },
 
-    userInfo: {
-        flexDirection: 'row',
-        alignItems: 'center'
+    backBtn: {
+        marginRight: 14,
     },
 
     profileCircle: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: '#8DC8FF',
-        marginRight: 10
+        width: 42,
+        height: 42,
+        borderRadius: 21,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
-    userName: {
-        fontSize: 15,
-        fontWeight: 'bold'
+    profileText: {
+        color: '#FFF',
+        fontSize: 19,
+        fontWeight: '700',
     },
 
-    online: {
+    headerName: {
+        marginLeft: 10,
+        fontSize: 17,
+        fontWeight: '700',
+        color: '#333',
+    },
+
+    onlineText: {
         fontSize: 12,
-        color: '#5CC85C'
+        color: '#7ADFCC',
+        marginLeft: 10,
     },
 
-    messageContainer: {
-        paddingHorizontal: 16,
-        paddingVertical: 10
+    chatArea: {
+        flex: 1,
+        paddingHorizontal: 18,
+        paddingTop: 10,
     },
 
-    otherBubble: {
-        maxWidth: '70%',
-        backgroundColor: '#fff',
-        padding: 12,
-        borderRadius: 16,
-        marginBottom: 10,
+    bubbleLeft: {
         alignSelf: 'flex-start',
-        elevation: 2
-    },
-
-    myBubble: {
-        maxWidth: '70%',
-        backgroundColor: '#53a8eb',
+        maxWidth: '80%',
+        backgroundColor: '#FFFFFF',
         padding: 12,
-        borderRadius: 16,
-        marginBottom: 10,
-        alignSelf: 'flex-end'
+        borderRadius: 18,
+        marginBottom: 8,
     },
 
-    otherText: {
-        fontSize: 14,
-        color: '#333'
+    bubbleRight: {
+        alignSelf: 'flex-end',
+        maxWidth: '80%',
+        backgroundColor: '#AFC6FF',
+        padding: 12,
+        borderRadius: 18,
+        marginBottom: 8,
     },
 
-    myText: {
-        fontSize: 14,
-        color: 'white'
+    text: {
+        fontSize: 16,
+        color: '#333',
     },
 
-    inputBar: {
+    inputArea: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderTopWidth: 1,
-        borderTopColor: '#eee'
+        padding: 12,
+        backgroundColor: '#FFFFFF',
     },
 
-    input: {
+    inputBox: {
         flex: 1,
-        marginHorizontal: 12,
-        fontSize: 15,
-        backgroundColor: '#f3f3f3',
+        backgroundColor: '#F0F2F5',
+        borderRadius: 24,
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        fontSize: 16,
+    },
+
+    sendBtn: {
+        marginLeft: 10,
+        backgroundColor: '#6A8CFF',
+        padding: 12,
         borderRadius: 20,
-        paddingHorizontal: 14,
-        paddingVertical: 8
-    }
+    },
+
+    sendText: {
+        color: '#FFF',
+        fontWeight: '700',
+    },
 });

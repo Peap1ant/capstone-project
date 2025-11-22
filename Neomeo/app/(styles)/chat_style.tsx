@@ -1,75 +1,109 @@
 import { StyleSheet } from 'react-native';
 
-export const chatListStyle = StyleSheet.create({
+export const chatStyle = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F8F9FB'
+    },
 
     header: {
-        paddingTop: 30,
         paddingHorizontal: 20,
-        marginBottom: 12
+        paddingVertical: 10,
+        paddingTop: 30,
     },
 
     title: {
-        fontSize: 22,
-        fontWeight: 'bold'
+        fontSize: 28,
+        fontWeight: '800',
+        color: '#222'
     },
 
     subtitle: {
-        fontSize: 14,
-        color: '#777',
-        marginTop: 4
+        fontSize: 15,
+        marginTop: 4,
+        color: '#666'
     },
 
-    card: {
-        flexDirection: 'row',
-        backgroundColor: 'white',
+    healMessageBox: {
+        backgroundColor: '#EEF4FF',
         padding: 14,
-        marginBottom: 14,
         borderRadius: 16,
-        elevation: 1
+        marginHorizontal: 20,
+        marginTop: 20,
+    },
+
+    healMessage: {
+        color: '#5678FF',
+        fontSize: 14,
+        fontWeight: '600'
+    },
+
+    listWrapper: {
+        marginTop: 10,
+    },
+
+    chatCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 22,
+        marginHorizontal: 20,
+        padding: 16,
+        marginBottom: 12,
+
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
     },
 
     profileCircle: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        justifyContent: 'center',
+        width: 54,
+        height: 54,
+        borderRadius: 27,
         alignItems: 'center',
-        marginRight: 12
+        justifyContent: 'center',
     },
 
-    profileLetter: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 18
+    profileText: {
+        color: '#FFF',
+        fontSize: 20,
+        fontWeight: '700',
     },
 
-    name: {
-        fontSize: 16,
-        fontWeight: 'bold'
+    chatInfo: {
+        flex: 1,
+        marginLeft: 14,
+    },
+
+    nickname: {
+        fontSize: 17,
+        fontWeight: '700',
+        color: '#333'
+    },
+
+    lastMessage: {
+        fontSize: 14,
+        marginTop: 3,
+        color: '#777',
+        maxWidth: '85%',
+    },
+
+    timeArea: {
+        flexDirection: 'column',
+        alignItems: 'flex-end',
     },
 
     time: {
         fontSize: 12,
-        color: '#999'
-    },
-
-    message: {
-        fontSize: 13,
-        color: '#666',
-        marginTop: 2
-    },
-
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        color: '#999',
+        marginBottom: 6,
     },
 
     onlineDot: {
         width: 10,
         height: 10,
         borderRadius: 5,
-        backgroundColor: '#42CC50',
-        marginLeft: 6
-    }
+        backgroundColor: '#7ADFCC',
+    },
 });
