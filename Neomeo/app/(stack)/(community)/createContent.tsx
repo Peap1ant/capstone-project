@@ -1,43 +1,89 @@
-import { useLocalSearchParams } from "expo-router";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { useUserData } from "@/src/(api)/useUserData";
+import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
+import SafeContainer from "@/src/(components)/SafeContainer";
 import SafeScroll from "@/src/(components)/SafeScroll";
-import axios from "axios";
 import { useState } from "react";
-import * as SecureStore from 'expo-secure-store';
+import { api } from '@/src/(api)/api';
+import { router } from "expo-router";
 
-const BASE_URL = "http://localhost:8080";
+export default function createContent() {
+    const [ title, setTitle ] = useState('')
+    const [ content, setContent ] = useState('')
 
-async function fetchUserId() {
-        const token = await SecureStore.getItemAsync('token')
-        if (!token) return;
+    const dateTime = (date = new Date()) => {
+        const iso = date.toISOString();
+        const base = iso.slice(0, 23).replace('T', ' ');
+        return base + "000";
+    };
+    
+    // Load user info
+
+    const { userInfo, error, loading } = useUserData();
+    
+    
+    if (loading) {
+        return (
+            <View>
+                <Text>유저 정보 로딩중...</Text>
+            </View>
+        );
+    }
+
+    if (error || !userInfo) {
+        return (
+            <View>
+                <Text>에러: {error || '유저 정보를 찾을 수 없습니다.'}</Text>
+            </View>
+        )
+    }
+    
+    const handleCreateContent = async () => {
+        if (!title.trim() || !content.trim()) {
+            Alert.alert('로그인 오류', '아이디와 비밀번호를 모두 입력해주세요.');
+            return;
+        }
+
+        const json_field = {
+            title: title.trim(),
+            content: content.trim(),
+            created_date: dateTime(),
+            updated_date: dateTime(),
+            user_id: userInfo.nickname
+        }
 
         try {
-            const res = await axios.get(`${BASE_URL}/`)
-        } catch {
-            return(<View></View>)
+            const res = await api.post('/api/boards', json_field)
+            console.log(res)
+
+            console.log('게시물 게시 성공')
+
+            router.replace('../../(screen)')
+        } catch (error: any) {
+            console.log('게시물 게시 실패', title, content, json_field, error)
         }
-}
-
-export default function createContentPage() {
-    const [id, setId] = useState('');
-    const [title, setTitle] = useState('');
-    const [userid, setUserId] = useState('');
-    const [created_date, setCreatedDate] = useState('');
-
-    const json_field = {
-        id: String(id).trim(),
-        title: String(title).trim(),
-        userid: String(userid).trim(),
-        created_date: String(created_date).trim()
     }
-
-    const createContent = async () => {
-        
-    }
-
-    return(
+    
+    return (
         <SafeScroll>
-            <Text>Create Content</Text>
+            <View>
+                <TextInput
+                onChangeText = {setTitle}
+                value = {title}
+                placeholder = '글 제목을 입력해주세요'
+                />
+            </View>
+            <View>
+                <TextInput
+                onChangeText = {setContent}
+                value = {content}
+                placeholder = '글 내용을 입력해주세요'
+                />
+            </View>
+            <TouchableOpacity onPress={() => handleCreateContent()}>
+                <View>
+                    <Text>게시하기</Text>
+                </View>
+            </TouchableOpacity>
         </SafeScroll>
     )
 }

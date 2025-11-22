@@ -4,6 +4,8 @@ import SafeScroll from '@/src/(components)/SafeScroll';
 import { Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { communityStyle } from '@/app/(styles)/community_style';
+import { useEffect, useState } from 'react';
+import { useCommunityList } from '@/src/(api)/useCommunityList';
 
 // 더미 데이터 (실제 API 연동 시 axios로 교체)
 const dummy_data = [
@@ -18,30 +20,6 @@ const dummy_data = [
         comments: 5,
         imgKey: '1',
         profileColor: '#5D9EFF'
-    },
-    {
-        id: '2',
-        name: '익명 B',
-        time: '5시간 전',
-        category: '일상',
-        title: '오늘 하루 어떻게 보내셨나요?',
-        content: '저는 오늘 산책을 다녀왔어요. 날씨가 좋아서 기분이 좋았습니다.',
-        likes: 42,
-        comments: 12,
-        imgKey: '2',
-        profileColor: '#B57BFF'
-    },
-    {
-        id: '3',
-        name: '익명 C',
-        time: '어제',
-        category: '추천',
-        title: '요즘 읽고 있는 책 추천해요',
-        content: '최근에 읽은 책 중에서 정말 좋았던 책이 있어서 공유해요.',
-        likes: 11,
-        comments: 1,
-        imgKey: '3',
-        profileColor: '#FF7CA8'
     }
 ];
 
@@ -52,44 +30,40 @@ const imageMap: Record<string, any> = {
 };
 
 export default function CommunityScreen() {
+    const { communityList, loading, error } = useCommunityList();
+
+    if (loading) return <div>로딩 중...</div>;
+    if (error) return <div>{error}</div>;
+    if (!communityList.length) return <div>데이터가 없습니다.</div>;
+
+    const real_data = communityList.map(item => ({
+            id: item.id,
+            name: '닉네임',
+            time: item.created_date,
+            content: item.content,
+            profileColor: '#5D9EFF',
+            imgKey: '1'
+    }));
+
     return (
         <SafeContainer>
 
             {/* 헤더 */}
             <View style={communityStyle.newHeader}>
-                <TouchableOpacity>
-                    <Ionicons name="chevron-back" size={28} color="black" />
-                </TouchableOpacity>
 
                 <Text style={communityStyle.newHeaderTitle}>게시판</Text>
-
-                <TouchableOpacity>
-                    <Ionicons name="add-circle" size={32} color="#7A6EFE" />
-                </TouchableOpacity>
-            </View>
-
-            {/* 필터 */}
-            <View style={communityStyle.filterContainer}>
-                <TouchableOpacity style={communityStyle.filterBtnActive}>
-                    <Ionicons name="star" size={16} color="white" />
-                    <Text style={communityStyle.filterTextActive}>전체</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={communityStyle.filterBtn}>
-                    <Ionicons name="flame" size={16} color="#444" />
-                    <Text style={communityStyle.filterText}>인기</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={communityStyle.filterBtn}>
-                    <Ionicons name="time" size={16} color="#444" />
-                    <Text style={communityStyle.filterText}>최신</Text>
-                </TouchableOpacity>
+                <Link href = {'../(stack)/(community)/createContent'}>
+                    <TouchableOpacity>
+                        <Ionicons name="add-circle" size={32} color="#53a8eb" />
+                    </TouchableOpacity>
+                </Link>
             </View>
 
             {/* 게시글 리스트 */}
+            {/* use real_data for real api test.*/}
             <SafeScroll>
                 <View style={{ paddingHorizontal: 18 }}>
-                    {dummy_data.map(item => (
+                    {real_data.map(item => (
                         <CommunityCard key={item.id} item={item} />
                     ))}
                 </View>
@@ -108,7 +82,7 @@ function CommunityCard({ item }: any) {
         <Link
             href={{
                 pathname: '../../(stack)/(community)/[id]',
-                params: { ...item }
+                params: { id: String(item.id) }
             }}
             asChild
         >
@@ -145,25 +119,6 @@ function CommunityCard({ item }: any) {
                         resizeMode="cover"
                     />
                 )}
-
-                {/* 좋아요 · 댓글 · 공유 */}
-                <View style={communityStyle.iconRow}>
-
-                    <View style={communityStyle.iconBox}>
-                        <Ionicons name="heart-outline" size={20} color="#FF5A79" />
-                        <Text style={communityStyle.iconText}>{item.likes}</Text>
-                    </View>
-
-                    <View style={communityStyle.iconBox}>
-                        <Ionicons name="chatbubble-ellipses-outline" size={20} color="#555" />
-                        <Text style={communityStyle.iconText}>{item.comments}</Text>
-                    </View>
-
-                    <View style={communityStyle.iconBox}>
-                        <Ionicons name="share-social-outline" size={20} color="#555" />
-                    </View>
-                </View>
-
             </TouchableOpacity>
         </Link>
     );

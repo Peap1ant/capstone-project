@@ -44,7 +44,7 @@ export const communityStyle = StyleSheet.create({
         borderRadius: 20,
         paddingVertical: 6,
         paddingHorizontal: 14,
-        backgroundColor: '#7A6EFE',
+        backgroundColor: '#53a8eb',
         marginRight: 8
     },
 
@@ -110,7 +110,7 @@ export const communityStyle = StyleSheet.create({
 
     badgeText: {
         fontSize: 11,
-        color: '#4F56D6'
+        color: '#53a8eb'
     },
 
     cardTitle: {

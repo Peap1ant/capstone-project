@@ -1,53 +1,21 @@
-import { useLocalSearchParams } from "expo-router";
-import { View, StyleSheet, Text, Image } from "react-native";
-import SafeScroll from "@/src/(components)/SafeScroll";
+import { View, Text } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { useCommunityData } from '@/src/(api)/useCommunityData';
 
-const imageMap: Record<string, any> = {
-    '1': require('../../../assets/images/testing/136-200x300.jpg'),
-    '2': require('../../../assets/images/testing/553-1000x300.jpg'),
-    '3': require('../../../assets/images/testing/564-500x500.jpg'),
-    '4': require('../../../assets/images/testing/804-500x300.jpg'),
-    '5': require('../../../assets/images/testing/811-200x300.jpg')
+export default function CommunityDetailScreen() {
+    const { id } = useLocalSearchParams();
+    const numericId = Number(id);
+
+    const { communityInfo, loading, error } = useCommunityData(numericId);
+
+    if (loading) return <Text>로딩 중...</Text>;
+    if (error) return <Text>{error}</Text>;
+    if (!communityInfo) return <Text>데이터가 없습니다.</Text>;
+
+    return (
+        <View>
+            <Text>{communityInfo.title}</Text>
+            <Text>{communityInfo.content}</Text>
+        </View>
+    );
 }
-
-export default function page() {
-    const { title, category, content, imgKey } = useLocalSearchParams<{
-        id: string,
-        title: string,
-        category: string,
-        content: string,
-        imgKey: string
-    }>();
-
-    const imgSource = imageMap[imgKey as string];
-
-    return(
-        <SafeScroll>
-            <View style = {community_page_style.titleContainer}>
-                <Text style = {community_page_style.title}>[{category}] {title}</Text>
-            </View>
-            <View style = {community_page_style.contentContainer}>
-                <Image source = {imgSource} />
-                <View style = {community_page_style.contentSeperator} />
-                <Text>{content}</Text>
-            </View>
-        </SafeScroll>
-    )
-}
-
-const community_page_style = StyleSheet.create({
-    title: {
-        fontSize: 20
-    },
-    titleContainer: {
-        borderBottomColor: '#aaaaaa',
-        borderBottomWidth: 2,
-        padding: 10
-    },
-    contentContainer: {
-        padding: 20
-    },
-    contentSeperator: {
-        padding: 10
-    }
-})

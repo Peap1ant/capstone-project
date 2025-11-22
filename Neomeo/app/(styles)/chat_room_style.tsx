@@ -52,7 +52,7 @@ export const chatRoomStyle = StyleSheet.create({
 
     myBubble: {
         maxWidth: '70%',
-        backgroundColor: '#8AA8FF',
+        backgroundColor: '#53a8eb',
         padding: 12,
         borderRadius: 16,
         marginBottom: 10,

@@ -55,7 +55,7 @@ export default function ChatListScreen() {
                     {dummyChats.map(chat => (
                         <Link
                             key={chat.id}
-                            href={{ pathname: '/(screen)/(chat)/[id]', params: { id: chat.id } }}
+                            href={{ pathname: '../../(stack)/(chat)/[id]', params: { id: chat.id } }}
                             asChild
                         >
                             <TouchableOpacity style={chatListStyle.card}>
