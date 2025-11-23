@@ -26,7 +26,12 @@ export default function LoginScreen() {
         try {
             const res = await api.post('/login', json_field)
 
-            console.log(`로그인 성공: username ${username} password ${password}`, res.data);
+            console.log('status:', res.status);
+            console.log('content-type:', res.headers['content-type']);
+            console.log('responseURL:', res.request?.responseURL);
+            console.log('data:', res.data);
+
+            console.log(`로그인 성공: username ${username} password ${password}`);
             Alert.alert('로그인 성공', '환영합니다!');
 
             try {
@@ -41,7 +46,7 @@ export default function LoginScreen() {
             router.replace('../(screen)')
 
         } catch (error: any) {
-            console.error('로그인 실패: 아이디 또는 비밀번호 다름', error);
+            console.error('로그인 실패', error);
             Alert.alert('아이디 또는 비밀번호가 틀렸습니다.');
         }
     };

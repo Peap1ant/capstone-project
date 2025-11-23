@@ -34,12 +34,16 @@ export default function CommunityScreen() {
 
     if (loading) return <div>로딩 중...</div>;
     if (error) return <div>{error}</div>;
-    if (!communityList.length) return <div>데이터가 없습니다.</div>;
+    if (!communityList.length) 
+        return <Link href = {'../(stack)/(community)/createContent'}>
+                    <TouchableOpacity>
+                        <Ionicons name="add-circle" size={32} color="#53a8eb" />
+                    </TouchableOpacity>
+                </Link>;
 
     const real_data = communityList.map(item => ({
             id: item.id,
             name: '닉네임',
-            time: item.created_date,
             content: item.content,
             profileColor: '#5D9EFF',
             imgKey: '1'

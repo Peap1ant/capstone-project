@@ -19,6 +19,7 @@ export function useCommunityList() {
         const fetchList = async () => {
             try {
                 const { data } = await api.get('/api/boards');
+                console.log(data)
                 setCommunityList(data);
                 console.log('커뮤니티 리스트 불러오기 완료', data);
             } catch (err) {

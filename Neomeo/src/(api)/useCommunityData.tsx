@@ -12,7 +12,7 @@ export function useCommunityData(id?: number) {
 
         const fetchDetail = async () => {
             try {
-                const { data } = await api.get(`/api/board/${id}`);
+                const { data } = await api.get(`/api/boards/${id}`);
                 setCommunityInfo(data);
                 console.log('커뮤니티 상세 불러오기 완료', data);
             } catch (err) {
