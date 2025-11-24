@@ -6,9 +6,31 @@ import { home_tabstyles } from '@/app/(styles)/home_tab_style';
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, router } from 'expo-router';
-import { useCommunityData } from '@/src/(api)/useCommunityData';
+import { useCommunityList } from '@/src/(api)/useCommunityList';
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+const MAX_TITLE_LENGTH = 18;
+
+const truncateTitle = (title: string, maxLength: number = MAX_TITLE_LENGTH) =>
+  title.length > maxLength ? `${title.slice(0, maxLength)}…` : title;
+
+export function useLatestCommunityMenu() {
+  const { communityList, loading, error } = useCommunityList();
+
+  const items = communityList
+    .slice(0, 5)
+    .reverse()
+    .map((item) => ({
+      icon: 'list-outline' as IoniconName,
+      label: truncateTitle(item.title),
+      href: {
+        pathname: '../../(stack)/(community)/[id]' as const,
+        params: { id: String(item.id) },
+      },
+    }));
+
+  return { items, loading, error };
+}
 
 const ad = [
     { name: 'ad 1', Thumbnail: require('../../../assets/images/testing/136-200x300.jpg'), href: '../(dummy)'}
@@ -22,34 +44,14 @@ const community = [
     { icon: 'list-outline', label: '공지 사항 테스트 5', href: '../../(dummy)' },
 ];
 
-function useAllCommunities() {
-  const ids = [1, 2, 3, 4, 5];
-
-  const results = ids.map(id => {
-    const { communityInfo, loading, error } = useCommunityData(id);
-    return { id, communityInfo, loading, error };
-  });
-
-  return results;
-}
 
 export default function HomeScreen() {
 
-    const communityList = useAllCommunities();
+    const { items, loading, error } = useLatestCommunityMenu();
 
-    if (communityList.some(item => item.loading)) return <Text>로딩 중...</Text>;
-    if (communityList.some(item => item.error)) return <Text>{communityList.some(item => item.error)}</Text>;
-
-    const communityItems = communityList
-    .filter(item => !item.error && item.communityInfo)
-    .map(item => ({
-        icon: 'list-outline' as IoniconName,
-        label: item.communityInfo?.title ?? "제목 없음",
-        href: {
-            pathname: '../../(stack)/(community)/[id]',
-            params: { id: String(item.id) },
-        }
-    }));
+    if (loading) return <Text>로딩 중...</Text>;
+    if (error) return <Text>{error}</Text>;
+    if (!items) return <Text>데이터가 없습니다.</Text>;
 
     return (
         <SafeScrollCenter style = {styles.container}>
@@ -61,7 +63,7 @@ export default function HomeScreen() {
             <ScrollView stickyHeaderIndices={[1]} style = {home_tabstyles.homeContainer} scrollEnabled = {false}>
                 <Text style = {styles.text}>커뮤니티 글</Text>
                 <View style = {more_tab_styles.menuList}>
-                        {communityItems.map((item, index) => (
+                        {items.map((item, index) => (
                             <Pressable key = {index} onPress={() => router.push(item.href)} style={home_tabstyles.homeMenuItem}>
                                 <Ionicons name = {item.icon} size={20} color='#000000' style={{ marginRight: 10 }} />
                                 <Text style = {more_tab_styles.menuText}>{item.label}</Text>

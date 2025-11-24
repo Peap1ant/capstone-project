@@ -20,8 +20,8 @@ export default function MoreScreen() {
 
     const userDatafield = {
 
-        name: userInfo.nickname,
-        location: "location",
+        nickname: userInfo.nickname,
+        name: userInfo.username,
         profileImage: require('../../../assets/images/react-logo.png'), 
         traits: [
             { title: "MBTI", value: "INTP" },
@@ -39,8 +39,8 @@ export default function MoreScreen() {
             <ScrollView style={styles.container}>
             <View style={more_tab_styles.profileSection}>
                 <Image source={userDatafield.profileImage} style={more_tab_styles.profileImage} />
+                <Text style={more_tab_styles.profileNickname}>{userDatafield.nickname} 님</Text>
                 <Text style={more_tab_styles.profileName}>{userDatafield.name} 님</Text>
-                <Text style={more_tab_styles.profileLocation}>{userDatafield.location}</Text>
             </View>
             <View style={more_tab_styles.cardContainer}>
                 {userDatafield.traits.map((trait, index) => (
