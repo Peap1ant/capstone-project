@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Text, ScrollView, Image, SafeAreaView, Pressabl
 import { Link, router } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { home_tabstyles as styles } from '@/app/(styles)/home_tab_style';
-import { useCommunityList } from '@/src/(api)/useCommunityList';
+// import { useCommunityList } from '@/src/(api)/useCommunityList'; // [API 연동] 나중에 주석 해제
 
 // 아이콘 타입 정의
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
@@ -13,7 +13,7 @@ const MAX_TITLE_LENGTH = 18;
 const truncateTitle = (title: string, maxLength: number = MAX_TITLE_LENGTH) =>
   title.length > maxLength ? `${title.slice(0, maxLength)}…` : title;
 
-// 커뮤니티 최신 글 가져오는 커스텀 훅 (API 연동)
+/* // API: 커뮤니티 최신 글 가져오는 커스텀 훅
 function useLatestCommunityMenu() {
   const { communityList, loading, error } = useCommunityList();
 
@@ -31,16 +31,29 @@ function useLatestCommunityMenu() {
 
   return { items, loading, error };
 }
+*/
 
 // 인기 콘텐츠 더미 데이터
 const dummyContents = [
-    { id: 1, title: '내면의 평화 찾기', subtitle: '명상과 휴식', image: require('../../../assets/images/testing/136-200x300.jpg') },
-    { id: 2, title: '스트레스 해소법', subtitle: '간단한 체조', image: require('../../../assets/images/testing/553-1000x300.jpg') },
+    { id: 1, title: '내면의 평화 찾기', subtitle: '명상과 휴식', image: require('../../../assets/images/testing/profile.jpg') },
+    { id: 2, title: '스트레스 해소법', subtitle: '간단한 체조', image: require('../../../assets/images/testing/profile.jpg') },
+];
+
+// [임시] API 대신 사용할 더미 데이터
+const dummy_data = [
+    { icon: 'list-outline' as IoniconName, label: '자유게시판 글 1', href: '../../(stack)/(community)/1' },
+    { icon: 'list-outline' as IoniconName, label: '자유게시판 글 2', href: '../../(stack)/(community)/2' },
+    { icon: 'list-outline' as IoniconName, label: '자유게시판 글 3', href: '../../(stack)/(community)/3' },
 ];
 
 export default function HomeScreen() {
-    // API 데이터 호출
-    const { items, loading, error } = useLatestCommunityMenu();
+    // [API 연동] API 데이터 호출 (나중에 주석 해제)
+    // const { items, loading, error } = useLatestCommunityMenu();
+
+    // [임시] 더미 데이터 사용
+    const items = dummy_data;
+    const loading = false;
+    const error = null;
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -66,6 +79,7 @@ export default function HomeScreen() {
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
                         {dummyContents.map((item) => (
                             <TouchableOpacity key={item.id} style={styles.contentCard}>
+                                {/* 이미지 경로가 없을 경우를 대비해 배경색 처리 */}
                                 <Image source={item.image} style={styles.contentImage} />
                                 <View style={styles.contentOverlay}>
                                     <Text style={styles.contentTitle}>{item.title}</Text>
@@ -76,7 +90,7 @@ export default function HomeScreen() {
                     </ScrollView>
                 </View>
 
-                {/* 자유게시판 섹션 (API 연동) */}
+                {/* 자유게시판 섹션 */}
                 <View style={styles.section}>
                     <View style={styles.sectionHeader}>
                         <Text style={styles.sectionTitle}>자유게시판</Text>
@@ -92,9 +106,10 @@ export default function HomeScreen() {
                     {error && <Text style={{ textAlign: 'center', marginTop: 10, color: 'red' }}>{error}</Text>}
                     
                     <View style={styles.postList}>
-                        {/* API 데이터 렌더링 */}
+                        {/* 데이터 렌더링 (items가 dummy_data를 참조함) */}
                         {items && items.map((item, index) => (
-                            <Pressable key={index} onPress={() => router.push(item.href)} style={styles.postItem}>
+                            // href 타입 문제 방지를 위해 any로 캐스팅
+                            <Pressable key={index} onPress={() => router.push(item.href as any)} style={styles.postItem}>
                                 <View style={styles.postIconCircle}>
                                     <Ionicons name={item.icon} size={20} color="#5678FF" />
                                 </View>
