@@ -104,23 +104,5 @@ export const chatStyle = StyleSheet.create({
         marginTop: 3,
         color: '#777',
         maxWidth: '85%',
-    },
-
-    timeArea: {
-        flexDirection: 'column',
-        alignItems: 'flex-end',
-    },
-
-    time: {
-        fontSize: 12,
-        color: '#999',
-        marginBottom: 6,
-    },
-
-    onlineDot: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        backgroundColor: '#7ADFCC',
-    },
+    }
 });

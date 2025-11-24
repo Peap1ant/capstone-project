@@ -1,19 +1,6 @@
-import { StyleSheet, ViewStyle, TextStyle } from "react-native";
+import { StyleSheet, TextStyle } from "react-native";
 
-interface CreateRoomStyles {
-    container: ViewStyle;
-    header: ViewStyle;
-    headerTitle: TextStyle;
-    formArea: ViewStyle;
-    label: TextStyle;
-    input: TextStyle;
-    textArea: TextStyle;
-    tagInput: TextStyle;
-    createButton: ViewStyle;
-    buttonText: TextStyle;
-}
-
-export const chatRoomStyle = StyleSheet.create<CreateRoomStyles>({
+export const chatRoomStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#F8F9FB',
@@ -69,4 +56,8 @@ export const chatRoomStyle = StyleSheet.create<CreateRoomStyles>({
         fontSize: 18,
         fontWeight: 'bold',
     },
+    slider: {
+        width: '100%',
+        height: 50
+    }
 });

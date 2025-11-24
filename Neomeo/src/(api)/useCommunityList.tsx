@@ -1,5 +1,6 @@
 import api from '@/src/(api)/api';
-import { useEffect, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import { useCallback, useEffect, useState } from 'react';
 
 export interface CommunityInfo {
     id: number;
@@ -15,24 +16,27 @@ export function useCommunityList() {
     const [communityList, setCommunityList] = useState<CommunityInfo[]>([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
+    const isFocused = useIsFocused();
+
+    const fetchList = useCallback(async () => {
+        try {
+            const { data } = await api.get('/api/boards');
+            console.log(data)
+            setCommunityList(data);
+            console.log('커뮤니티 리스트 불러오기 완료', data);
+        } catch (err) {
+            console.log(err);
+            setError('커뮤니티 정보를 불러오지 못했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const fetchList = async () => {
-            try {
-                const { data } = await api.get('/api/boards');
-                console.log(data)
-                setCommunityList(data);
-                console.log('커뮤니티 리스트 불러오기 완료', data);
-            } catch (err) {
-                console.log(err);
-                setError('커뮤니티 정보를 불러오지 못했습니다.');
-            } finally {
-                setLoading(false);
-            }
-        };
-
+        if (isFocused) {
         fetchList();
-    }, []);
+        }
+    }, [isFocused, fetchList]);
 
     return { communityList, error, loading };
 }

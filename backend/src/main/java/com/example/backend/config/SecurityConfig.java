@@ -76,6 +76,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:8081"));
+        configuration.setAllowedOriginPatterns(List.of("*")); // 채팅 테스트용
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
@@ -130,10 +131,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/user").hasRole(UserRoleType.USER.name())
                         .requestMatchers(HttpMethod.PUT, "/user").hasRole(UserRoleType.USER.name())
                         .requestMatchers(HttpMethod.DELETE, "/user").hasRole(UserRoleType.USER.name())
-
+                        // 채팅 기능
+                        .requestMatchers("/ws-stomp/**").permitAll()
                         // 게시판 기능 추가
-
                         .requestMatchers(HttpMethod.GET, "/boards", "/boards/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/boards/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/boards").hasRole(UserRoleType.USER.name())
                         .requestMatchers(HttpMethod.PUT,  "/boards/{id}").hasRole(UserRoleType.USER.name())
                         .requestMatchers(HttpMethod.DELETE, "/boards/{id}").hasRole(UserRoleType.USER.name())

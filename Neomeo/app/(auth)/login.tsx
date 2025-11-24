@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Platform } from 'react-native';
 import { Link, router } from 'expo-router';
 import { authStyles as styles } from '../(styles)/auth_style';
 import { useAuth } from '../../src/(auth)/AuthContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { api } from '@/src/(api)/api';
 import { setToken } from '@/src/(api)/token';
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const isWeb = Platform.OS === 'web';
 
 export default function LoginScreen() {
     const { login } = useAuth();
@@ -26,19 +30,23 @@ export default function LoginScreen() {
         try {
             const res = await api.post('/login', json_field)
 
-            console.log('status:', res.status);
-            console.log('content-type:', res.headers['content-type']);
-            console.log('responseURL:', res.request?.responseURL);
-            console.log('data:', res.data);
-
             console.log(`로그인 성공: username ${username} password ${password}`);
             Alert.alert('로그인 성공', '환영합니다!');
 
             try {
+                if (isWeb) {
+                    await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+                } else {
+                    await SecureStore.deleteItemAsync('accessToken');
+                    await SecureStore.deleteItemAsync('refreshToken');
+                }
+
+                console.log('기존 토큰 삭제 완료')
+
                 await setToken('accessToken', res.data.accessToken);
                 await setToken('refreshToken', res.data.refreshToken);
 
-                console.log(`토큰 발급 성공`);
+                console.log(`새 토큰 발급 성공`);
             } catch (error: any) {
                 console.log('토큰 발급 실패', error);
             }

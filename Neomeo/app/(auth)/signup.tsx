@@ -56,7 +56,7 @@ export default function SignUpScreen() {
         <Ionicons name="person-outline" size={20} color="#888" style={styles.authInputIcon} />
         <TextInput
             style={styles.authInput}
-            placeholder="사용할 아이디"
+            placeholder="이름(로그인 시 사용)"
             placeholderTextColor="#AAA"
             value={username}
             onChangeText={setUsername}
