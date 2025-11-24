@@ -6,10 +6,19 @@ export const chatStyle = StyleSheet.create({
         backgroundColor: '#F8F9FB'
     },
 
-    header: {
+    // 버튼 배치를 위한 헤더 컨테이너 (기존 header 대체)
+    headerContainer: { 
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         paddingHorizontal: 20,
         paddingVertical: 10,
         paddingTop: 30,
+    },
+    
+    // 새 채팅방 만들기 버튼 스타일
+    newRoomButton: { 
+        paddingLeft: 10,
     },
 
     title: {
@@ -23,7 +32,7 @@ export const chatStyle = StyleSheet.create({
         marginTop: 4,
         color: '#666'
     },
-
+    
     healMessageBox: {
         backgroundColor: '#EEF4FF',
         padding: 14,
@@ -37,7 +46,7 @@ export const chatStyle = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600'
     },
-
+    
     listWrapper: {
         marginTop: 10,
     },
@@ -80,6 +89,14 @@ export const chatStyle = StyleSheet.create({
         fontSize: 17,
         fontWeight: '700',
         color: '#333'
+    },
+    
+    // 채팅방 목록의 태그 스타일
+    roomTag: {
+        fontSize: 13,
+        fontWeight: '600',
+        color: '#5678FF',
+        marginTop: 2,
     },
 
     lastMessage: {
