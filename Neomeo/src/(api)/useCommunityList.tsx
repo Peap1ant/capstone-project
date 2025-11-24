@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 export interface CommunityInfo {
     id: number;
     title: string;
-    content: string;
+    Content: string;
     created_date: string;
     updated_time: string;
     user_id: number;
+    writerNickName: string;
 }
 
 export function useCommunityList() {

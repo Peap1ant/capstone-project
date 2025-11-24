@@ -43,9 +43,10 @@ export default function CommunityScreen() {
 
     const real_data = communityList.map(item => ({
             id: item.id,
-            name: '닉네임',
-            content: item.content,
+            name: item.writerNickName,
+            content: item.Content,
             profileColor: '#5D9EFF',
+            time: item.updated_time,
             imgKey: '1'
     }));
 
