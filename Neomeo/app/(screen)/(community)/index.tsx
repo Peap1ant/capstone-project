@@ -16,8 +16,8 @@ const imageMap: Record<string, any> = {
 export default function CommunityScreen() {
     const { communityList, loading, error } = useCommunityList();
 
-    if (loading) return <div>로딩 중...</div>;
-    if (error) return <div>{error}</div>;
+    if (loading) return <Text>로딩 중...</Text>;
+    if (error) return <Text>{error}</Text>;
     if (!communityList.length) 
         return <Link href = {'../(stack)/(community)/createContent'}>
                     <TouchableOpacity>
