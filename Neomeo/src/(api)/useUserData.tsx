@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 export interface UserInfo {
     username: string,
     email: string,
-    nickname: string
+    nickname: string,
+    password: string
 }
 
 export function useUserData() {

@@ -12,21 +12,9 @@ export default function MoreScreen() {
 
     const { userInfo, error, loading } = useUserData();
 
-    if (loading) {
-        return (
-            <View>
-                <Text>유저 정보 로딩중...</Text>
-            </View>
-        );
-    }
-
-    if (error || !userInfo) {
-        return (
-            <View>
-                <Text>에러: {error || '유저 정보를 찾을 수 없습니다.'}</Text>
-            </View>
-        )
-    }
+    if (loading) return <Text>로딩 중...</Text>;
+    if (error) return <Text>{error}</Text>;
+    if (!userInfo) return <Text>데이터가 없습니다.</Text>;
 
     console.log(userInfo)
 

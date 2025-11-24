@@ -7,22 +7,6 @@ import { communityStyle } from '@/app/(styles)/community_style';
 import { useEffect, useState } from 'react';
 import { useCommunityList } from '@/src/(api)/useCommunityList';
 
-// 더미 데이터 (실제 API 연동 시 axios로 교체)
-const dummy_data = [
-    {
-        id: '1',
-        name: '익명 A',
-        time: '2시간 전',
-        category: '취미',
-        title: '저를 케어하는 아이콘 만들기',
-        content: '디자인에 관심이 생겨서 간단한 아이콘을 만들어봤어요.',
-        likes: 24,
-        comments: 5,
-        imgKey: '1',
-        profileColor: '#5D9EFF'
-    }
-];
-
 const imageMap: Record<string, any> = {
     '1': require('../../../assets/images/testing/136-200x300.jpg'),
     '2': require('../../../assets/images/testing/553-1000x300.jpg'),
@@ -46,7 +30,7 @@ export default function CommunityScreen() {
             name: item.writerNickName,
             content: item.Content,
             profileColor: '#5D9EFF',
-            time: item.updated_time,
+            title: item.title,
             imgKey: '1'
     }));
 
@@ -102,12 +86,6 @@ function CommunityCard({ item }: any) {
                     </View>
 
                     <Text style={communityStyle.userName}>{item.name}</Text>
-                    <Text style={communityStyle.dot}>•</Text>
-                    <Text style={communityStyle.timeText}>{item.time}</Text>
-
-                    <View style={communityStyle.badge}>
-                        <Text style={communityStyle.badgeText}>{item.category}</Text>
-                    </View>
                 </View>
 
                 {/* 제목 */}

@@ -43,7 +43,7 @@ export default function LoginScreen() {
                 console.log('토큰 발급 실패', error);
             }
 
-            router.replace('../(screen)')
+            router.replace('../(screen)/(home)')
 
         } catch (error: any) {
             console.error('로그인 실패', error);

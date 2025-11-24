@@ -4,25 +4,33 @@ import { Link, router, useRouter } from 'expo-router';
 import { authStyles as styles } from '../../(styles)/auth_style';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { api } from '@/src/(api)/api';
+import { useUserData } from '@/src/(api)/useUserData';
 
 export default function SignUpScreen() {
     const router = useRouter();
-    const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState("");
 
+    const { userInfo, error, loading } = useUserData();
+    
+    if (loading) return <Text>로딩 중...</Text>;
+    if (error) return <Text>{error}</Text>;
+    if (!userInfo) return <Text>데이터가 없습니다.</Text>;
+
     const json_field = {
-        password: String(password).trim(),
-        nickname: String(nickname).trim()
+        nickname: String(nickname).trim(),
+        username: userInfo.username
     }
 
+    console.log(userInfo)
+
     const handleSignUp = async () => {
-        console.log(`유저 정보 수정, password ${password} nickname ${nickname}`);
+        console.log(`유저 정보 수정, nickname ${nickname}`);
         try {
             const res = await api.put('/user', json_field)
 
             if (res.status === 200 || res.status === 201) {
                 Alert.alert('유저 정보 수정 성공', '메인 화면으로 이동합니다.');
-                router.replace('../../(screen)');
+                router.replace('../../(screen)/(home)');
             } else {
                 Alert.alert('유저 정보 수정 실패', `서버 응답 코드: ${res.status}`);
             }
@@ -46,22 +54,10 @@ export default function SignUpScreen() {
         <Ionicons name="person-outline" size={20} color="#888" style={styles.authInputIcon} />
         <TextInput
             style={styles.authInput}
-            placeholder="닉네임"
+            placeholder={userInfo.nickname}
             placeholderTextColor="#AAA"
             value={nickname}
             onChangeText={setNickname}
-        />
-        </View>
-
-        <View style={styles.authInputContainer}>
-        <Ionicons name="lock-closed-outline" size={20} color="#888" style={styles.authInputIcon} />
-        <TextInput
-            style={styles.authInput}
-            placeholder="비밀번호"
-            placeholderTextColor="#AAA"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
         />
         </View>
         
