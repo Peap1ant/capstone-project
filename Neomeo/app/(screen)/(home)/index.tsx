@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Text, ScrollView, Image, SafeAreaView, Pressabl
 import { Link, router } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { home_tabstyles as styles } from '@/app/(styles)/home_tab_style';
-import { useLatestCommunityMenu } from '@/src/(api)/useLatestCommunityMenu';
+import { useCommunityList } from '@/src/(api)/useCommunityList';
 
 // 아이콘 타입 정의
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
@@ -14,7 +14,7 @@ const truncateTitle = (title: string, maxLength: number = MAX_TITLE_LENGTH) =>
   title.length > maxLength ? `${title.slice(0, maxLength)}…` : title;
 
 // 커뮤니티 최신 글 가져오는 커스텀 훅 (API 연동)
-export function useLatestCommunityMenu() {
+function useLatestCommunityMenu() {
   const { communityList, loading, error } = useCommunityList();
 
   const items = communityList
@@ -34,8 +34,8 @@ export function useLatestCommunityMenu() {
 
 // 인기 콘텐츠 더미 데이터
 const dummyContents = [
-    { id: 1, title: '내면의 평화 찾기', subtitle: '명상과 휴식', image: require('../../../assets/images/testing/profile.jpg') },
-    { id: 2, title: '스트레스 해소법', subtitle: '간단한 체조', image: require('../../../assets/images/testing/profile.jpg') },
+    { id: 1, title: '내면의 평화 찾기', subtitle: '명상과 휴식', image: require('../../../assets/images/testing/136-200x300.jpg') },
+    { id: 2, title: '스트레스 해소법', subtitle: '간단한 체조', image: require('../../../assets/images/testing/553-1000x300.jpg') },
 ];
 
 export default function HomeScreen() {
