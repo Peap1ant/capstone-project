@@ -7,10 +7,10 @@ export const more_tab_styles = StyleSheet.create({
     profileImage: { 
         width: 100, height: 100, borderRadius: 50, marginBottom: 10 
     },
-    profileName: { 
+    profileNickname: { 
         fontSize: 20, fontWeight: "bold" 
     },
-    profileLocation: { 
+    profileName: { 
         fontSize: 14, color: "#777777" 
     },
     cardContainer: { 

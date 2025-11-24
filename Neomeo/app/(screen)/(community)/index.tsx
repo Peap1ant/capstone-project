@@ -25,6 +25,8 @@ export default function CommunityScreen() {
                     </TouchableOpacity>
                 </Link>;
 
+    console.log(communityList)
+
     const real_data = communityList.map(item => ({
             id: item.id,
             name: item.writerNickName,
