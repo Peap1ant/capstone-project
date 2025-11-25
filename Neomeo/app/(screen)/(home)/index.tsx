@@ -32,12 +32,6 @@ export function useLatestCommunityMenu() {
   return { items, loading, error };
 }
 
-// dummy data for testing
-
-const dummy_data = [
-    {icon: 'list-outline' as IoniconName, label: 1, href: '../../(stack)/(dummy)'}
-]
-
 const ad = [
     { name: 'ad 1', Thumbnail: require('../../../assets/images/testing/136-200x300.jpg'), href: '../(dummy)'}
 ]

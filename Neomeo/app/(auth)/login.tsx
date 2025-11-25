@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Image, Platform } from 'react-native';
 import { Link, router } from 'expo-router';
 import { authStyles as styles } from '../(styles)/auth_style';
 import { useAuth } from '../../src/(auth)/AuthContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { api } from '@/src/(api)/api';
 import { setToken } from '@/src/(api)/token';
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const isWeb = Platform.OS === 'web';
 
 export default function LoginScreen() {
     const { login } = useAuth();
@@ -25,7 +29,7 @@ export default function LoginScreen() {
 
         try {
             const res = await api.post('/login', json_field)
-
+            
             console.log('status:', res.status);
             console.log('content-type:', res.headers['content-type']);
             console.log('responseURL:', res.request?.responseURL);
@@ -35,6 +39,12 @@ export default function LoginScreen() {
             Alert.alert('로그인 성공', '환영합니다!');
 
             try {
+                if (isWeb) {
+                    await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+                } else {
+                    await SecureStore.deleteItemAsync('accessToken');
+                    await SecureStore.deleteItemAsync('refreshToken');
+                }
                 await setToken('accessToken', res.data.accessToken);
                 await setToken('refreshToken', res.data.refreshToken);
 
