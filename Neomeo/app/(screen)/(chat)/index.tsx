@@ -104,9 +104,12 @@ export default function ChatList() {
                 style={chatStyle.listWrapper}
                 renderItem={({ item }) => (
                     <Link href={{
-                        pathname: `../../(stack)/(dummy)/${item.roomid}`,
+                        pathname: `../../(stack)/(chat)/${item.roomid}`,
                         params: {
                             id: String(item.roomid),
+                            name: String(item.name),
+                            tags: item.tags,
+                            maxUserCnt: Number(item.maxUserCnt),
                             color: item.color
                         }
                     }} asChild>

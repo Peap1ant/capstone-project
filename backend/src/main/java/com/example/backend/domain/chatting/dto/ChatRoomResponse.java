@@ -12,7 +12,7 @@ public class ChatRoomResponse {
     private final String name;
     private final String hostUser;
     private final List<String> tags;
-    // private final int userCount; // (나중에 인원수 필요시 추가)
+    //private final int userCount; // (나중에 인원수 필요시 추가)
 
     // 1. 생성자는 데이터를 받아서 할당만 함 (UUID 생성 로직 제거)
     private ChatRoomResponse(String roomId, String name, String hostUser, List<String> tags) {

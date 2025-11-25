@@ -2,7 +2,9 @@ package com.example.backend.domain.chatting.controller;
 
 import com.example.backend.domain.chatting.dto.ChatRoomResponse;
 import com.example.backend.domain.chatting.dto.CreateRoomRequest;
+import com.example.backend.domain.chatting.entity.ChatMessageEntity;
 import com.example.backend.domain.chatting.entity.ChatRoomEntity;
+import com.example.backend.domain.chatting.repository.ChatMessageRepository;
 import com.example.backend.domain.chatting.repository.ChatRoomRepository;
 // 1. (추가) 인증 관련 임포트
 import java.security.Principal;
@@ -19,6 +21,7 @@ import java.util.UUID;
 public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     // 1. 오픈채팅방 생성 (보안 적용)
     @PostMapping("/room")
@@ -59,5 +62,13 @@ public class ChatRoomController {
     @GetMapping("/rooms/search")
     public ResponseEntity<List<ChatRoomEntity>> searchRooms(@RequestParam String tag) {
         return ResponseEntity.ok(chatRoomRepository.findByTag(tag));
+    }
+
+    // 4. 지난 대화 내역 조회
+    @GetMapping("/room/{roomId}/messages")
+    public ResponseEntity<List<ChatMessageEntity>> getMessages(@PathVariable String roomId) {
+        // 실제로는 Service로 분리하는 것이 좋습니다.
+        List<ChatMessageEntity> messages = chatMessageRepository.findByRoomIdOrderBySendTimeAsc(roomId);
+        return ResponseEntity.ok(messages);
     }
 }

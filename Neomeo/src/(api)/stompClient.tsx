@@ -1,13 +1,17 @@
+// src/(api)/stompClient.ts
 import { Client } from '@stomp/stompjs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WS_URL = 'ws://localhost:8080/ws-stomp'; // WebSocket 엔드포인트
 
+// ✅ 공통으로 쓸 ChatMessage 타입
 export interface ChatMessage {
-  type: 'TALK' | 'ENTER' | 'QUIT';
-  roomId: string;
-  sender: string;
-  message: string;
+  id?: number;                                  // 과거 기록에서 사용
+  roomId?: string;                              // 방 ID
+  sender?: string;
+  message?: string;
+  type?: 'TALK' | 'ENTER' | 'QUIT' | string;    // 혹시 모를 확장 고려
+  sendTime?: string;                            // 날짜/시간 (REST의 sendDate를 여기로 매핑)
 }
 
 /**
@@ -24,7 +28,6 @@ export async function createStompClient(): Promise<Client> {
     webSocketFactory: () => new WebSocket(WS_URL),
 
     connectHeaders: {
-      // 토큰이 없으면 빈 문자열
       Authorization: token ? `Bearer ${token}` : '',
     },
 
@@ -32,7 +35,7 @@ export async function createStompClient(): Promise<Client> {
       console.log('STOMP DEBUG:', str);
     },
 
-    reconnectDelay: 5000, // 재연결 딜레이(ms)
+    reconnectDelay: 5000,
     heartbeatIncoming: 10000,
     heartbeatOutgoing: 10000,
   });
