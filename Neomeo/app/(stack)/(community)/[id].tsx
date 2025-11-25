@@ -54,7 +54,7 @@ export default function CommunityDetailScreen() {
                 onPress: async () => {
                     try {
                         await deleteCommunity(numericId);
-                        router.replace("../../(screen)");
+                        router.replace("../../(screen)/(community)");
                     } catch (e) {
                         Alert.alert("삭제 실패", "삭제 중 오류가 발생했습니다.");
                     }
