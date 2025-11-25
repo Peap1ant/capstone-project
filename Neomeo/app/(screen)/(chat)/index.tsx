@@ -22,6 +22,7 @@ const color_field = [
 ];
 
 export default function ChatList() {
+
     const healMessage = healMessages[Math.floor(Math.random() * healMessages.length)];
 
     const handleNewRoom = () => {
@@ -90,21 +91,30 @@ export default function ChatList() {
                             asChild
                         >
                             <TouchableOpacity style={chatStyle.chatCard}>
+                                
+                                {/* 프로필 색깔 원 */}
                                 <View style={[chatStyle.profileCircle, { backgroundColor: item.color }]}>
                                     <Text style={chatStyle.profileText}>{item.name[0]}</Text>
                                 </View>
 
-                                <View style={chatStyle.chatInfo}>
+                                {/* 이름 + 태그 */}
+                                <View style={{ flex: 1 }}>
                                     <Text style={chatStyle.nickname}>{item.name}</Text>
-                                    <Text style={chatStyle.roomTag}>{item.tags}</Text>
+
+                                    {item.tags && (
+                                        <Text style={chatStyle.roomTag}>
+                                            #{item.tags}
+                                        </Text>
+                                    )}
                                 </View>
+
                             </TouchableOpacity>
                         </Link>
                     )}
                 />
             )}
 
-            {/* ===================== 중앙 팝업 검색 UI ===================== */}
+            {/* ---------------- 중앙 팝업 검색 UI ---------------- */}
             {isSearchOpen && (
                 <>
                     {/* 반투명 배경 */}
@@ -116,7 +126,7 @@ export default function ChatList() {
                         }}
                     />
 
-                    {/* 중앙 팝업 카드 */}
+                    {/* 중앙 팝업 박스 */}
                     <View
                         style={{
                             position: 'absolute',
@@ -133,7 +143,7 @@ export default function ChatList() {
                             elevation: 6,
                         }}
                     >
-                        {/* 닫기 버튼 */}
+                        {/* 닫기 */}
                         <TouchableOpacity
                             onPress={() => setIsSearchOpen(false)}
                             style={{ alignSelf: 'flex-end', marginBottom: 8 }}
@@ -230,7 +240,7 @@ export default function ChatList() {
                                 >
                                     <Text style={{ fontSize: 16, fontWeight: '700' }}>{item.name}</Text>
                                     <Text style={{ marginTop: 4, color: '#5678FF', fontWeight: '600' }}>
-                                        {item.tags}
+                                        #{item.tags}
                                     </Text>
                                 </View>
                             )}
@@ -244,7 +254,7 @@ export default function ChatList() {
                 </>
             )}
 
-            {/* 기존 + 버튼 */}
+            {/* + 버튼 */}
             {!isSearchOpen && (
                 <TouchableOpacity
                     onPress={handleNewRoom}
@@ -253,6 +263,8 @@ export default function ChatList() {
                     <Ionicons name="add-circle" size={60} color="#5678FF" />
                 </TouchableOpacity>
             )}
+
         </View>
     );
 }
+
