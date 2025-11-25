@@ -2,33 +2,41 @@ import api from '@/src/(api)/api';
 import { useEffect, useState } from 'react';
 import type { ChatInfo } from './useChatList';
 
-export function fetchChatTag(tag: string) {
-    const [ tagChatList, setChatInfo] = useState<ChatInfo | null>(null);
-    const [ error, setError ] = useState<string>('');
-    const [ loading, setLoading ] = useState<boolean>(true);
+export function useFetchChatTag(tag: string) {
 
-    useEffect (() => {
-        if (!tag) return;
+    const [tagChatList, setTagChatList] = useState<ChatInfo[]>([]); 
+    const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(true);
 
-        const fetchTag = async() => {
+    useEffect(() => {
+        console.log("검색할 태그:", tag);
+        
+        if (!tag) {
+            setTagChatList([]);
+            setLoading(false);
+            return;
+        }
+
+        const fetchTag = async () => {
+            setLoading(true);
             try {
-                const res = await api.get(`/chat/rooms/search?tag=${tag}`);
-                setChatInfo(res.data);
-
-                console.log(res);
-                console.log('태그 정보 불러오기 완료');
+                const res = await api.get('/chat/rooms/search', {
+                    params: { tag: tag } 
+                });
+                
+                setTagChatList(res.data);
+                console.log('태그 검색 결과:', res.data);
             } catch (err) {
-                console.log(err)
-                setError('채팅 정보를 불러오지 못했습니다. useChatData.tsx');
+                console.error(err);
+                setError('채팅 정보를 불러오지 못했습니다.');
             } finally {
                 setLoading(false);
             }
-        }
+        };
 
         fetchTag();
 
-    }, [tag])
+    }, [tag]);
 
     return { tagChatList, error, loading };
-
 }

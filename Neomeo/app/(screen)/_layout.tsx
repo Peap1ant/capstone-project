@@ -41,6 +41,15 @@ export default function TabsLayout() {
                     ),
                 }}
             />
+            <Tabs.Screen
+                name = '(test)/index'
+                options = {{
+                    title: '테스트',
+                    tabBarIcon: ({ color, focused }) => (
+                        <Ionicons name = {focused ? 'key': 'key-outline'} color = { color } size = {24}/>
+                    ),
+                }}
+            />
         </Tabs>
     );
 }
