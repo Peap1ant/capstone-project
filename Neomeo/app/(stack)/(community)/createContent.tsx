@@ -106,7 +106,7 @@ export default function CreateContent() {
                                 style={styles.titleInput}
                                 onChangeText={setTitle}
                                 value={title}
-                                placeholder="Post Title"
+                                placeholder="게시글 제목"
                                 placeholderTextColor="#9CA3AF"
                             />
 
@@ -123,7 +123,7 @@ export default function CreateContent() {
                                 style={styles.contentInput}
                                 onChangeText={setContent}
                                 value={content}
-                                placeholder="글 내용을 입력해주세요"
+                                placeholder="게시글 내용을 입력해주세요"
                                 placeholderTextColor="#9CA3AF"
                                 multiline
                                 textAlignVertical="top"
@@ -210,6 +210,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         fontSize: 20,
         fontWeight: "700",
+        width:'70%'
     },
     mediaButton: {
         paddingHorizontal: 14,
