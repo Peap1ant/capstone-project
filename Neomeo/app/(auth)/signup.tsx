@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Platform } from 'react-native';
 import { Link, router, useRouter } from 'expo-router';
 import { authStyles as styles } from '../(styles)/auth_style';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { api } from '@/src/(api)/api';
+import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const isWeb = Platform.OS === 'web';
 
 export default function SignUpScreen() {
     const router = useRouter();
@@ -28,6 +32,15 @@ export default function SignUpScreen() {
             console.log(`회원가입 시도, username ${username} email ${email} password ${password} nickname ${nickname}`);
             try {
                 const res = await api.post('/user', json_field)
+
+                // to fix error can login whe have token at local storage
+                
+                if (isWeb) {
+                    await AsyncStorage.multiRemove(['accessToken', 'refreshToken']);
+                } else {
+                    await SecureStore.deleteItemAsync('accessToken');
+                    await SecureStore.deleteItemAsync('refreshToken');
+                }
 
                 if (res.status === 200 || res.status === 201) {
                     Alert.alert('회원가입 성공', '로그인 화면으로 이동합니다.');
