@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,} from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useStompChat } from '@/src/(api)/useStompChat';
+import { useChatMessages } from '@/src/(api)/useChatMassages';
 import type { ChatMessage } from '@/src/(api)/stompClient';
 
 export default function ChatRoomScreen() {
@@ -18,6 +12,13 @@ export default function ChatRoomScreen() {
 
   const [input, setInput] = useState('');
   const [username, setUsername] = useState<string>(''); // AsyncStorage 에서 가져옴
+
+  const { messages_old, loading_old, error_old } = useChatMessages(roomId)
+
+  if (loading_old) return <Text>불러오는 중...</Text>;
+  if (error_old) return <Text>{error_old}</Text>;
+
+  console.log(messages_old)
 
   useEffect(() => {
     const loadUsername = async () => {
