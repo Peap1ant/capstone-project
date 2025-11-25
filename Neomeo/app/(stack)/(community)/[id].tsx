@@ -38,30 +38,26 @@ export default function CommunityDetailScreen() {
         !!userInfo &&
         userInfo.nickname === communityInfo.writerNickName;
 
-    const handleDelete = () => {
-        if (!communityInfo) return;
-
+    const handleDelete = async () => {
         if (!isAuthor) {
+            console.log("작성자가 아님");
             Alert.alert("권한 없음", "내가 작성한 글만 삭제할 수 있습니다.");
             return;
         }
 
-        Alert.alert("글 삭제", "정말로 이 글을 삭제하시겠습니까?", [
-            { text: "취소", style: "cancel" },
-            {
-                text: "삭제",
-                style: "destructive",
-                onPress: async () => {
-                    try {
-                        await deleteCommunity(numericId);
-                        router.replace("../../(screen)/(community)");
-                    } catch (e) {
-                        Alert.alert("삭제 실패", "삭제 중 오류가 발생했습니다.");
-                    }
-                },
-            },
-        ]);
+        console.log("작성자 맞음. 바로 삭제 시도");
+
+        try {
+            const res = await deleteCommunity(numericId); // 없으면 왜 안되는거지
+            console.log("삭제 완료:");
+            router.replace("../../(screen)");
+        } catch (e) {
+            console.log("삭제 중 에러:", e);
+            Alert.alert("삭제 실패", "삭제 중 오류가 발생했습니다.");
+        }
     };
+
+
 
     const handleEdit = () => {
         if (!communityInfo) return;
