@@ -85,7 +85,7 @@ export default function ChatList() {
                     renderItem={({ item }) => (
                         <Link
                             href={{
-                                pathname: `../../(stack)/(dummy)/${item.roomid}`,
+                                pathname: `../../chattingRoom/${item.roomid}`,
                                 params: { id: String(item.roomid), color: item.color }
                             }}
                             asChild

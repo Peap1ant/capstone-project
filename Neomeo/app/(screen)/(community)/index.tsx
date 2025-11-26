@@ -86,7 +86,7 @@ function CommunityCard({ item }: any) {
     return (
         <Link
             href={{
-                pathname: '../../(stack)/(community)/[id]',
+                pathname: '../../communityContent/[id]',
                 params: { id: String(item.id) }
             }}
             asChild

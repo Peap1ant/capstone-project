@@ -9,9 +9,15 @@ export function useChatMessages(roomId: string) {
   const [error_old, setError] = useState('');
 
   useEffect(() => {
-    if (!roomId) return;
 
     const fetchMessages = async () => {
+
+      if (!roomId) {
+        // 방 ID 없으면 그냥 로딩만 false 로
+        setLoading(false);
+        return;
+      }
+
       try {
         const { data } = await api.get(`/chat/room/${roomId}/messages`);
 

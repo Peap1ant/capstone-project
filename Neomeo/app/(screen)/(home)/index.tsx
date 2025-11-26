@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Text, ScrollView, Image, SafeAreaView, Pressabl
 import { Link, router } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { home_tabstyles as styles } from '@/app/(styles)/home_tab_style';
+import { useFetchChatTag } from '@/src/(api)/fetchChatTag';
 
 // API 연동
 import { useCommunityList } from '@/src/(api)/useCommunityList';
@@ -12,28 +13,50 @@ type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
 // 인기 콘텐츠 dummy
 const dummyContents = [
-  { id: 1, title: '내면의 평화 찾기', subtitle: '명상과 휴식', image: require('../../../assets/images/testing/profile.jpg') },
-  { id: 2, title: '스트레스 해소법', subtitle: '간단한 체조', image: require('../../../assets/images/testing/profile.jpg') },
+  { id: 1, title: '내면의 평화 찾기', subtitle: '명상과 휴식', image: require('../../../assets/images/testing/553-1000x300.jpg') },
+  { id: 2, title: '스트레스 해소법', subtitle: '간단한 체조', image: require('../../../assets/images/testing/564-500x500.jpg') },
 ];
 
-// 인기 채팅방 추천 dummy
-const popularChatRooms = [
-  { id: 1, tag: '#우울', title: '오늘도 힘내요', users: 24, color: '#DDE8FF' },
-  { id: 2, tag: '#힐링', title: '마음의 휴식', users: 18, color: '#EDE1FF' },
-  { id: 3, tag: '#공부', title: '밤샘 스터디', users: 32, color: '#FFECCF' },
+// fetch chating
+const chatTag = '#테스트'
+
+const color_field = [
+    { color: '#FF6363' },
+    { color: '#FFA600' },
+    { color: '#FFCD56' },
+    { color: '#4BC0C0' },
+    { color: '#36A2EB' }
 ];
 
 export default function HomeScreen() {
 
   // 자유게시판 API에서 리스트 받기
   const { communityList, loading, error } = useCommunityList();
+  const { tagChatList, error: error_tag, loading: loading_tag } = useFetchChatTag(chatTag);
 
   if (loading) return <Text style={{ marginTop: 50, textAlign: 'center' }}>로딩 중...</Text>;
   if (error) return <Text style={{ marginTop: 50, textAlign: 'center' }}>{error}</Text>;
   if (!communityList) return <Text style={{ marginTop: 50, textAlign: 'center' }}>데이터가 없습니다.</Text>;
 
+  if (loading_tag) return <Text style={{ marginTop: 50, textAlign: 'center' }}>로딩 중...</Text>;
+  if (error_tag) return <Text style={{ marginTop: 50, textAlign: 'center' }}>{error}</Text>;
+  if (!tagChatList) return <Text style={{ marginTop: 50, textAlign: 'center' }}>데이터가 없습니다.</Text>;
+
   // 최신 3개만 (뒤에서부터 가져와 정렬)
   const latestPosts = communityList.slice(-3).reverse();
+
+  const random_color = () => {
+        const idx = Math.floor(Math.random() * color_field.length);
+        return color_field[idx];
+    };
+
+  const popularChatRooms = tagChatList.map(item => ({
+        id: item.roomId,
+        title: item.name,
+        tags: item.tags,
+        users: item.maxUserCnt,
+        color: random_color().color
+    }));
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -80,23 +103,25 @@ export default function HomeScreen() {
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
             {popularChatRooms.map((room) => (
-              <View key={room.id} style={[styles.chatCard, { backgroundColor: room.color }]}>
+              <TouchableOpacity>
+                <View key={room.id} style={[styles.chatCard, { backgroundColor: room.color }]}>
 
-                {/* 해시태그 */}
-                <View style={styles.tagPill}>
-                  <Text style={styles.tagText}>{room.tag}</Text>
+                  {/* 해시태그 */}
+                  <View style={styles.tagPill}>
+                    <Text style={styles.tagText}>{room.tags}</Text>
+                  </View>
+
+                  {/* 제목 */}
+                  <Text style={styles.chatRoomTitle}>{room.title}</Text>
+
+                  {/* 참여자 */}
+                  <View style={styles.chatUserRow}>
+                    <Ionicons name="people-outline" size={13} color="#555" />
+                    <Text style={styles.chatUserCount}>{room.users}명</Text>
+                  </View>
+
                 </View>
-
-                {/* 제목 */}
-                <Text style={styles.chatRoomTitle}>{room.title}</Text>
-
-                {/* 참여자 */}
-                <View style={styles.chatUserRow}>
-                  <Ionicons name="people-outline" size={13} color="#555" />
-                  <Text style={styles.chatUserCount}>{room.users}명</Text>
-                </View>
-
-              </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>

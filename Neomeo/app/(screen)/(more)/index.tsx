@@ -7,6 +7,7 @@ import SafeScroll from '../../../src/(components)/SafeScroll';
 import { styles } from '../../(styles)/main_style';
 import { more_tab_styles } from '../../(styles)/more_tab_style'
 import { useUserData } from '@/src/(api)/useUserData'
+import { useAuth } from "@/src/(auth)/AuthContext";
 
 export default function MoreScreen() {
 
@@ -30,14 +31,20 @@ export default function MoreScreen() {
         ],
     };
 
+    const { logout } = useAuth()
+
+    const handleLogout = async () => {
+        await logout()
+    }
+
     const menuItems = [
-        { icon: "person-outline", label: "개인정보 관리", href: "../(stack)/(profile)" },
-        { icon: "accessibility-outline", label: "프로필 수정", href: "../(stack)/(dummy)" },
-        { icon: "add", label: "친구 추가", href: "../(stack)/(dummy)" },
-        { icon: "albums-outline", label: "내 게시판 글", href: "../(stack)/(dummy)" },
-        { icon: "bookmarks-outline", label: "스크랩한 글", href: "../(stack)/(dummy)" },
-        { icon: "arrow-up-left-box-outline", label: "도움 받기", href: "../(stack)/(dummy)" },
-        { icon: "book-outline", label: "도움이 되는 말", href: "../(stack)/(dummy)" }    
+        { icon: "person-outline", label: "개인정보 관리", href: "../(stack)/(profile)", command: NaN },
+        { icon: "accessibility-outline", label: "프로필 수정", href: "../(stack)/(dummy)", command: NaN },
+        { icon: "add", label: "친구 추가", href: "../(stack)/(dummy)", command: NaN },
+        { icon: "albums-outline", label: "내 게시판 글", href: "../(stack)/(dummy)", command: NaN },
+        { icon: "bookmarks-outline", label: "스크랩한 글", href: "../(stack)/(dummy)", command: NaN },
+        { icon: "arrow-up-left-box-outline", label: "도움 받기", href: "../(stack)/(dummy)", command: NaN },
+        { icon: "book-outline", label: "도움이 되는 말", href: "../(stack)/(dummy)", command: NaN },
     ];
 
     return (
@@ -46,7 +53,7 @@ export default function MoreScreen() {
             <View style={more_tab_styles.profileSection}>
                 <Image source={userDatafield.profileImage} style={more_tab_styles.profileImage} />
                 <Text style={more_tab_styles.profileNickname}>{userDatafield.nickname} 님</Text>
-                <Text style={more_tab_styles.profileName}>{userDatafield.name} 님</Text>
+                <Text style={more_tab_styles.profileName}>안녕하세요, {userDatafield.name} 님</Text>
             </View>
             <View style={more_tab_styles.cardContainer}>
                 {userDatafield.traits.map((trait, index) => (
@@ -61,6 +68,18 @@ export default function MoreScreen() {
                 <MenuItem key={index} icon={item.icon} label={item.label} href={item.href} />
                 ))}
             </View>
+            <TouchableOpacity
+                onPress={handleLogout}
+                style={{
+                marginTop: 20,
+                paddingHorizontal: 16,
+                paddingVertical: 10,
+                borderRadius: 8,
+                backgroundColor: '#ff5555',
+                }}
+            >
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>로그아웃</Text>
+            </TouchableOpacity>
             </ScrollView>
         </SafeScroll>
     );

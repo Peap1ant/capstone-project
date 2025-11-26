@@ -52,6 +52,8 @@ export default function LoginScreen() {
                 await setToken('refreshToken', res.data.refreshToken);
 
                 console.log(`새 토큰 발급 성공`);
+
+                login();
             } catch (error: any) {
                 console.log('토큰 발급 실패', error);
             }
