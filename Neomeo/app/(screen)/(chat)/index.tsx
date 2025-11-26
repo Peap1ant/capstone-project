@@ -98,16 +98,16 @@ export default function ChatList() {
                                 </View>
 
                                 {/* 이름 + 태그 */}
+                                {/* 이름 + 태그 */}
                                 <View style={{ flex: 1 }}>
                                     <Text style={chatStyle.nickname}>{item.name}</Text>
 
                                     {item.tags && (
                                         <Text style={chatStyle.roomTag}>
-                                            #{item.tags}
+                                            #{String(item.tags).replace(/^#/, "")}
                                         </Text>
                                     )}
                                 </View>
-
                             </TouchableOpacity>
                         </Link>
                     )}

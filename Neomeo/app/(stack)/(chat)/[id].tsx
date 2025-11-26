@@ -30,7 +30,7 @@ export default function ChatRoom() {  
         color: color
     };
 
-        // 📌 WebSocket 연결
+        // WebSocket 연결
     const { sendMessage } = useWebSocket(id, (msg) => {
         setChatList((prev) => [...prev, msg]);
     });
