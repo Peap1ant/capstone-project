@@ -1,6 +1,8 @@
 package com.example.backend.domain.chatting.controller;
 
 import com.example.backend.domain.chatting.dto.ChatMessage;
+import com.example.backend.domain.chatting.entity.ChatMessageEntity;
+import com.example.backend.domain.chatting.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -13,7 +15,7 @@ import java.security.Principal; // 1. Principal 임포트
 public class ChatController {
 
     private final SimpMessageSendingOperations messagingTemplate;
-
+    private final ChatMessageRepository chatMessageRepository;
     // 2. 메서드 파라미터에 Principal 추가
     // (StompHandler가 JWT 검증 후 넣어준 인증 객체입니다.)
     @MessageMapping("chat/message")
@@ -40,6 +42,16 @@ public class ChatController {
                 message.setMessage(message.getSender() + "님이 퇴장하셨습니다.");
                 break;
         }
+
+        ChatMessageEntity chatEntity = ChatMessageEntity.builder()
+                .roomId(message.getRoomId())
+                .sender(principal.getName())
+                .message(message.getMessage())
+                .type(ChatMessageEntity.MessageType.valueOf(message.getType().name()))
+                .build();
+
+        chatMessageRepository.save(chatEntity);
+
 
         // 5. 전송
         messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);

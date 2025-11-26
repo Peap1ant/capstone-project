@@ -45,10 +45,13 @@ export default function LoginScreen() {
                     await SecureStore.deleteItemAsync('accessToken');
                     await SecureStore.deleteItemAsync('refreshToken');
                 }
+
+                console.log('기존 토큰 삭제 완료')
+
                 await setToken('accessToken', res.data.accessToken);
                 await setToken('refreshToken', res.data.refreshToken);
 
-                console.log(`토큰 발급 성공`);
+                console.log(`새 토큰 발급 성공`);
             } catch (error: any) {
                 console.log('토큰 발급 실패', error);
             }

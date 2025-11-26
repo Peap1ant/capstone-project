@@ -1,57 +1,294 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import React, { useState } from "react";
+import {
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    FlatList,
+    StyleSheet,
+} from "react-native";
 import { useLocalSearchParams, router } from "expo-router";
-import { chatRoomStyle } from "../../(styles)/chat_room_style";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function ChatRoom() {  
-    const { id } = useLocalSearchParams();
+import { chatRoomStyle } from "../../(styles)/chat_room_style";
+import { useStompChat } from "@/src/(api)/useStompChat";
+import { useChatMessages } from "@/src/(api)/useChatMassages";
+import { useUserData } from "@/src/(api)/useUserData";
+import type { ChatMessage } from "@/src/(api)/stompClient";
 
-    const dummyChat = [
-        { from: 'other', text: '안녕하세요!' },
-        { from: 'me', text: '안녕하세요 반가워요' },
-        { from: 'other', text: '오늘 날씨 정말 좋네요' },
-        { from: 'me', text: '네 맞아요! 기분도 좋아지는 것 같아요' },
-    ];
+type DateDivider = {
+    _kind: "date";
+    label: string;
+    key: string;
+};
+
+type MessageItem = ChatMessage & {
+    _kind: "msg";
+    key: string;
+};
+
+type ChatListItem = DateDivider | MessageItem;
+
+export default function ChatRoomScreen() {
+    const params = useLocalSearchParams<{
+        id: string;
+        name?: string;
+        tags?: string | string[];
+        maxUserCnt?: string | string[];
+        color?: string;
+    }>();
+
+    const roomId = String(params.id);
+    const color = params.color ? String(params.color) : "#ccc";
+    const roomName = params.name ? String(params.name) : "알 수 없음";
+
+    // tags: item.tags (배열 또는 문자열) 처리
+    const rawTags = params.tags;
+    let tagsArray: string[] = [];
+
+    if (Array.isArray(rawTags)) {
+        tagsArray = rawTags;
+    } else if (typeof rawTags === "string" && rawTags.length > 0) {
+        tagsArray = [rawTags];
+    }
+
+    const rawMaxUser = params.maxUserCnt;
+    let maxUserCnt: number | undefined = undefined;
+    if (Array.isArray(rawMaxUser)) {
+        maxUserCnt = parseInt(rawMaxUser[0], 10);
+    } else if (typeof rawMaxUser === "string") {
+        maxUserCnt = parseInt(rawMaxUser, 10);
+    }
+
+    const [input, setInput] = useState("");
+
+    // ✅ 1) 모든 훅을 최상단에서 먼저 호출
+    const {
+        userInfo,
+        loading: userLoading,
+        error: userError,
+    } = useUserData();
+
+    const username = userInfo?.username ?? ""; // 아직 없으면 빈 문자열
+
+    const {
+        messages_old,
+        loading_old,
+        error_old,
+    } = useChatMessages(roomId);
+
+    const {
+        connected,
+        messages,
+        error_stomp,
+        sendMessage,
+    } = useStompChat(roomId, username);
+
+    // ✅ 2) 이후에 조건부 렌더링만 수행 (훅 호출 X)
+    if (userLoading) {
+        return <Text>유저 정보 불러오는 중...</Text>;
+    }
+    if (userError || !userInfo) {
+        return <Text>유저 정보를 불러오지 못했습니다.</Text>;
+    }
+    if (loading_old) {
+        return <Text>이전 채팅 불러오는 중...</Text>;
+    }
+    if (error_old) {
+        return <Text>{error_old}</Text>;
+    }
+
+    const onPressSend = () => {
+        if (!input.trim()) return;
+        sendMessage(input.trim());
+        setInput("");
+    };
+
+    const currentRoom = {
+        roomid: roomId,
+        name: roomName,
+        tags: tagsArray,
+        color: color,
+        maxUserCnt,
+    };
+
+    // ---------- REST + STOMP 메시지 통합 & 시간 정렬 ----------
+    const normalizedNew = messages.map((m: ChatMessage) => ({
+        ...m,
+        sendTime: m.sendTime ?? new Date().toISOString(),
+    }));
+
+    const allMessages: (ChatMessage & { sendTime?: string })[] = [
+        ...messages_old,
+        ...normalizedNew,
+    ].sort(
+        (a, b) =>
+            new Date(a.sendTime ?? 0).getTime() -
+            new Date(b.sendTime ?? 0).getTime()
+    );
+
+    const formatDateLabel = (dateStr?: string) => {
+        if (!dateStr) return "";
+
+        const date = new Date(dateStr);
+        const today = new Date();
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        const d = date.toDateString();
+        const t = today.toDateString();
+        const y = yesterday.toDateString();
+
+        if (d === t) return "오늘";
+        if (d === y) return "어제";
+
+        return dateStr.split("T")[0];
+    };
+
+    const finalList: ChatListItem[] = [];
+    let lastDate = "";
+
+    allMessages.forEach((msg, idx) => {
+        const timeStr = msg.sendTime ?? new Date().toISOString();
+        const msgDate = timeStr.split("T")[0];
+
+        if (msgDate !== lastDate) {
+            finalList.push({
+                _kind: "date",
+                label: formatDateLabel(timeStr),
+                key: `date-${msgDate}`,
+            });
+            lastDate = msgDate;
+        }
+
+        finalList.push({
+            ...msg,
+            _kind: "msg",
+            key: msg.id ? `msg-${msg.id}` : `msg-${timeStr}-${idx}`,
+        });
+    });
+
+    const renderItem = ({ item }: { item: ChatListItem }) => {
+        if (item._kind === "date") {
+            return (
+                <View style={localStyles.dateDivider}>
+                    <Text style={localStyles.dateText}>{item.label}</Text>
+                </View>
+            );
+        }
+
+        const isMine = item.sender === username;
+        const isEnter = item.type === "ENTER";
+
+        return (
+            <View style={{ marginVertical: 4 }}>
+                {!isEnter && !isMine && (
+                    <Text style={chatRoomStyle.messageNickname}>
+                        {item.sender ?? "익명"}
+                    </Text>
+                )}
+
+                <View
+                    style={[
+                        isMine
+                            ? chatRoomStyle.bubbleRight
+                            : chatRoomStyle.bubbleLeft,
+                        { backgroundColor: isMine ? "#AFC6FF" : "#FFFFFF" },
+                    ]}
+                >
+                    <Text
+                        style={[
+                            chatRoomStyle.text,
+                            isMine && { color: "#FFFFFF" },
+                        ]}
+                    >
+                        {isEnter ? "🔔 입장하였습니다." : item.message}
+                    </Text>
+                </View>
+            </View>
+        );
+    };
 
     return (
         <View style={chatRoomStyle.container}>
-            {/* Header */}
             <View style={chatRoomStyle.header}>
-                <TouchableOpacity style={chatRoomStyle.backBtn} onPress={() => router.back()}>
+                <TouchableOpacity
+                    style={chatRoomStyle.backBtn}
+                    onPress={() => router.back()}
+                >
                     <Ionicons name="arrow-back" size={26} color="#333" />
                 </TouchableOpacity>
 
-                <View style={[chatRoomStyle.profileCircle, { backgroundColor: '#AFC6FF' }]}>
-                    <Text style={chatRoomStyle.profileText}>익</Text>
+                <View
+                    style={[
+                        chatRoomStyle.profileCircle,
+                        { backgroundColor: currentRoom.color || "#ccc" },
+                    ]}
+                >
+                    <Text style={chatRoomStyle.profileText}>
+                        {currentRoom.name[0]}
+                    </Text>
                 </View>
 
-                <Text style={chatRoomStyle.headerName}>익명 {id}</Text>
-                <Text style={chatRoomStyle.onlineText}>● 온라인</Text>
+                <View style={chatRoomStyle.headerInfoArea}>
+                    <Text style={chatRoomStyle.headerName}>
+                        {currentRoom.name}
+                    </Text>
+                    <Text style={chatRoomStyle.headerTags}>
+                        {currentRoom.tags.join(" ")}
+                    </Text>
+                </View>
             </View>
 
-            {/* Chat Area */}
-            <ScrollView style={chatRoomStyle.chatArea}>
-                {dummyChat.map((msg, idx) => (
-                    <View
-                        key={idx}
-                        style={msg.from === 'me' ? chatRoomStyle.bubbleRight : chatRoomStyle.bubbleLeft}
-                    >
-                        <Text style={chatRoomStyle.text}>{msg.text}</Text>
-                    </View>
-                ))}
-            </ScrollView>
+            {error_stomp && (
+                <Text style={{ color: "red", marginHorizontal: 16 }}>
+                    STOMP 에러: {String(error_stomp)}
+                </Text>
+            )}
 
-            {/* Input */}
+            <FlatList
+                data={finalList}
+                keyExtractor={(item) => item.key}
+                renderItem={renderItem}
+                contentContainerStyle={localStyles.chatList}
+            />
+
             <View style={chatRoomStyle.inputArea}>
                 <TextInput
                     style={chatRoomStyle.inputBox}
                     placeholder="천천히 말해도 괜찮아요…"
                     placeholderTextColor="#999"
+                    value={input}
+                    onChangeText={setInput}
                 />
-                <TouchableOpacity style={chatRoomStyle.sendBtn}>
+                <TouchableOpacity
+                    style={chatRoomStyle.sendBtn}
+                    onPress={onPressSend}
+                >
                     <Text style={chatRoomStyle.sendText}>전송</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 }
+
+const localStyles = StyleSheet.create({
+    chatList: {
+        flexGrow: 1,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+    },
+    dateDivider: {
+        alignSelf: "center",
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 12,
+        backgroundColor: "#eee",
+        marginVertical: 6,
+    },
+    dateText: {
+        fontSize: 12,
+        color: "#555",
+        fontWeight: "600",
+    },
+});

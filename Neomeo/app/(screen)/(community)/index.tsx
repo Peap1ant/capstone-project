@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { communityStyle } from '@/app/(styles)/community_style';
 import { useEffect, useState } from 'react';
 import { useCommunityList } from '@/src/(api)/useCommunityList';
+import { styles } from '@/app/(styles)/main_style';
 
 const imageMap: Record<string, any> = {
     '1': require('../../../assets/images/testing/136-200x300.jpg'),
@@ -19,11 +20,24 @@ export default function CommunityScreen() {
     if (loading) return <Text>로딩 중...</Text>;
     if (error) return <Text>{error}</Text>;
     if (!communityList.length) 
-        return <Link href = {'../(stack)/(community)/createContent'}>
+        
+        return (
+        <SafeContainer>
+            {/* 헤더 */}
+            <View style={communityStyle.newHeader}>
+
+                <Text style={communityStyle.newHeaderTitle}>게시판</Text>
+                <Link href = {'../(stack)/(community)/createContent'}>
                     <TouchableOpacity>
-                        <Ionicons name="add-circle" size={32} color="#53a8eb" />
+                        <Ionicons name="add-circle-outline" size={32} color="#53a8eb" />
                     </TouchableOpacity>
-                </Link>;
+                </Link>
+            </View>
+            <View style = {styles.content_center}>
+                <Text style={communityStyle.cardTitle}>아직 게시판에 글이 없습니다! 작성해보세요!</Text>
+            </View>
+        </SafeContainer>
+        )
 
     console.log(communityList)
 
@@ -45,7 +59,7 @@ export default function CommunityScreen() {
                 <Text style={communityStyle.newHeaderTitle}>게시판</Text>
                 <Link href = {'../(stack)/(community)/createContent'}>
                     <TouchableOpacity>
-                        <Ionicons name="add-circle" size={32} color="#53a8eb" />
+                        <Ionicons name="add-circle-outline" size={32} color="#53a8eb" />
                     </TouchableOpacity>
                 </Link>
             </View>
