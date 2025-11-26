@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Image, Platform } from 'react-native';
 import { Link, router } from 'expo-router';
 import { authStyles as styles } from '../(styles)/auth_style';
 import { useAuth } from '../../src/(auth)/AuthContext';
@@ -29,6 +29,11 @@ export default function LoginScreen() {
 
         try {
             const res = await api.post('/login', json_field)
+            
+            console.log('status:', res.status);
+            console.log('content-type:', res.headers['content-type']);
+            console.log('responseURL:', res.request?.responseURL);
+            console.log('data:', res.data);
 
             console.log(`로그인 성공: username ${username} password ${password}`);
             Alert.alert('로그인 성공', '환영합니다!');

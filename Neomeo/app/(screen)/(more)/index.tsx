@@ -46,7 +46,7 @@ export default function MoreScreen() {
             <View style={more_tab_styles.profileSection}>
                 <Image source={userDatafield.profileImage} style={more_tab_styles.profileImage} />
                 <Text style={more_tab_styles.profileNickname}>{userDatafield.nickname} 님</Text>
-                <Text style={more_tab_styles.profileName}>{userDatafield.name} 님, 환영합니다.</Text>
+                <Text style={more_tab_styles.profileName}>{userDatafield.name} 님</Text>
             </View>
             <View style={more_tab_styles.cardContainer}>
                 {userDatafield.traits.map((trait, index) => (

@@ -15,7 +15,8 @@ public class CreateRoomRequest {
     @NotBlank(message = "방 제목은 필수입니다.")
     @Size(min = 2, max = 20, message = "방 제목은 2자 이상 20자 이하여야 합니다.")
     private String name;       // 방 제목
-    
+
+    // ❌ 삭제됨: private String hostUser;
     // (Controller에서 Principal.getName()으로 해결)
 
     private List<String> tags; // 태그 리스트
