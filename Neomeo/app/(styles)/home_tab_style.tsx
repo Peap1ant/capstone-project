@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const home_tabstyles = StyleSheet.create({
     safeArea: {
         flex: 1,
-        backgroundColor: '#F8F9FB', 
+        backgroundColor: '#F8F9FB',
     },
     container: {
         flex: 1,
@@ -11,8 +11,8 @@ export const home_tabstyles = StyleSheet.create({
     scrollContent: {
         paddingBottom: 30,
     },
-    
-    // 헤더 영역 스타일
+
+    // 헤더
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -32,12 +32,12 @@ export const home_tabstyles = StyleSheet.create({
         marginTop: 4,
     },
     notificationButton: {
-        backgroundColor: '#8E97FD', 
+        backgroundColor: '#8E97FD',
         padding: 8,
         borderRadius: 20,
     },
 
-    // 섹션 공통 컨테이너
+    // 섹션 공통
     section: {
         marginTop: 24,
         paddingHorizontal: 20,
@@ -58,14 +58,14 @@ export const home_tabstyles = StyleSheet.create({
         color: '#888',
     },
 
-    // 인기 콘텐츠 가로 스크롤 스타일
+    // 인기 콘텐츠
     horizontalScroll: {
-        marginHorizontal: -20, 
-        paddingHorizontal: 20, 
+        marginHorizontal: -20,
+        paddingHorizontal: 20,
     },
     contentCard: {
-        width: 280,
-        height: 160,
+        width: 260,
+        height: 150,
         borderRadius: 20,
         marginRight: 15,
         overflow: 'hidden',
@@ -81,20 +81,20 @@ export const home_tabstyles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        padding: 20,
-        backgroundColor: 'rgba(0,0,0,0.3)', 
+        padding: 18,
+        backgroundColor: 'rgba(0,0,0,0.30)',
     },
     contentTitle: {
         color: '#fff',
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 'bold',
     },
     contentSubtitle: {
         color: '#eee',
-        fontSize: 14,
+        fontSize: 13,
     },
 
-    // 자유게시판 리스트 스타일
+    // 자유게시판
     postList: {
         marginTop: 5,
     },
@@ -142,5 +142,52 @@ export const home_tabstyles = StyleSheet.create({
         fontSize: 12,
         color: '#999',
         marginRight: 8,
+    },
+
+    // ⭐ 리뉴얼된 인기 채팅방 추천 카드
+    chatCard: {
+        width: 150,
+        height: 130,
+        borderRadius: 20,
+        paddingVertical: 12,
+        paddingHorizontal: 12,
+        marginRight: 15,
+        justifyContent: 'space-between',
+        shadowColor: '#000',
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+        elevation: 4,
+    },
+
+    // 태그 pill
+    tagPill: {
+        alignSelf: 'flex-start',
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 12,
+    },
+    tagText: {
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#5678FF',
+    },
+
+    chatRoomTitle: {
+        marginTop: 6,
+        fontSize: 16,
+        fontWeight: '700',
+        color: '#222',
+    },
+
+    chatUserRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 8,
+    },
+    chatUserCount: {
+        marginLeft: 4,
+        fontSize: 13,
+        color: '#555',
     },
 });

@@ -1,8 +1,10 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { Link, router } from 'expo-router';
 import { chatStyle } from '@/app/(styles)/chat_style';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useChatList } from '@/src/(api)/useChatList';
+import { useFetchChatTag } from "@/src/(api)/fetchChatTag";
+import { useState } from 'react';
 
 const healMessages = [
     "오늘도 잘 버티셨어요.",
@@ -11,124 +13,258 @@ const healMessages = [
     "천천히 해도 돼요.",
 ];
 
-const dummyChat = [
-    { id: 'a', name: '우울 극복방', last: '안녕하세요, 오늘 날씨가...', time: '10:30', color: '#AFC6FF', tag: '#취미공유' },
-    { id: 'b', name: '게임 친구 찾기', last: '같이 얘기하실 분 계신가요?', time: '09:15', color: '#D2C1FF', tag: '#게임' },
-    { id: 'c', name: '매일 힘내기', last: '오늘 하루도 힘내세요!', time: '어제', color: '#FFAFBC', tag: '#일상' },
-    { id: 'd', name: '익명 독서 클럽', last: '취미 생활 공유하고 싶어요', time: '어제', color: '#8FE9FF', tag: '#독서' },
+const color_field = [
+    { color: '#FF6363' },
+    { color: '#FFA600' },
+    { color: '#FFCD56' },
+    { color: '#4BC0C0' },
+    { color: '#36A2EB' }
 ];
 
-const color_field = [
-    {color: '#FF6363'},
-    {color: '#FFA600'},
-    {color: '#FFCD56'},
-    {color: '#4BC0C0'},
-    {color: '#36A2EB'}
-]
-
 export default function ChatList() {
+
     const healMessage = healMessages[Math.floor(Math.random() * healMessages.length)];
-    
-    // 새 채팅방 만들기 버튼 핸들러: create-room.tsx로 이동하도록 수정
+
     const handleNewRoom = () => {
-        // (stack)/(chat)에서 한 단계 상위인 (stack)으로 나와 create-room으로 이동
-        router.push('../(stack)/(chat)/create-room'); 
+        router.push('../(stack)/(chat)/create-room');
     };
 
-    const { chatList, error, loading } = useChatList();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [roomKeyword, setRoomKeyword] = useState('');
+    const [tagInput, setTagInput] = useState('');
+    const [searchTag, setSearchTag] = useState('');
 
-    if (loading) return <Text>로딩 중...</Text>;
-    if (error) return <Text>{error}</Text>;
-    if (!chatList.length)
-        return (
-        <View style={chatStyle.container}>
-            
-            {/* 타이틀과 새 채팅방 만들기 버튼을 포함하는 헤더 영역 */}
-            <View style={chatStyle.headerContainer}>
-                <View>
-                    <Text style={chatStyle.title}>채팅방</Text>
-                    <Text style={chatStyle.subtitle}>새로운 사람들과 연결되세요</Text>
-                </View>
-                {/* 새 채팅방 만들기 버튼 */}
-                <TouchableOpacity onPress={handleNewRoom} style={chatStyle.newRoomButton}>
-                    <Ionicons name="add-circle-outline" size={32} color="#5678FF" />
-                </TouchableOpacity>
-            </View>
-
-            <View style={chatStyle.healMessageBox}>
-                <Text style={chatStyle.healMessage}>{healMessage}</Text>
-            </View>
-        </View>
-    );
-
-
+    const { chatList } = useChatList();
+    const { tagChatList } = useFetchChatTag(searchTag);
 
     const random_color = () => {
         const idx = Math.floor(Math.random() * color_field.length);
         return color_field[idx];
-    }; 
+    };
 
     const real_data = chatList.map(item => ({
         roomid: item.roomId,
         name: item.name,
-        hostUser: item.hostUser,
         tags: item.tags,
-        maxUserCnt: item.maxUserCnt,
         color: random_color().color
-    }))
+    }));
 
-    console.log(real_data)
+    const handleTagSearch = () => {
+        if (!tagInput.trim()) return;
+        setSearchTag(tagInput);
+    };
 
     return (
         <View style={chatStyle.container}>
-            
-            {/* 타이틀과 새 채팅방 만들기 버튼을 포함하는 헤더 영역 */}
+
+            {/* 상단 헤더 */}
             <View style={chatStyle.headerContainer}>
                 <View>
                     <Text style={chatStyle.title}>채팅방</Text>
                     <Text style={chatStyle.subtitle}>새로운 사람들과 연결되세요</Text>
                 </View>
-                {/* 새 채팅방 만들기 버튼 */}
-                <TouchableOpacity onPress={handleNewRoom} style={chatStyle.newRoomButton}>
-                    <Ionicons name="add-circle-outline" size={32} color="#5678FF" />
+
+                <TouchableOpacity onPress={() => setIsSearchOpen(true)}>
+                    <Ionicons name="search" size={32} color="#5678FF" />
                 </TouchableOpacity>
             </View>
 
-            <View style={chatStyle.healMessageBox}>
-                <Text style={chatStyle.healMessage}>{healMessage}</Text>
-            </View>
+            {/* 힐 메시지 */}
+            {!isSearchOpen && (
+                <View style={chatStyle.healMessageBox}>
+                    <Text style={chatStyle.healMessage}>{healMessage}</Text>
+                </View>
+            )}
 
-            <FlatList
-                data={real_data}
-                keyExtractor={(item) => item.roomid}
-                style={chatStyle.listWrapper}
-                renderItem={({ item }) => (
-                    <Link href={{
-                        pathname: `../../(stack)/(chat)/${item.roomid}`,
-                        params: {
-                            id: String(item.roomid),
-                            name: String(item.name),
-                            tags: item.tags,
-                            maxUserCnt: Number(item.maxUserCnt),
-                            color: item.color
-                        }
-                    }} asChild>
-                        <TouchableOpacity style={chatStyle.chatCard}>
-                            <View style={[chatStyle.profileCircle, { backgroundColor: item.color as unknown as string }]}>
-                                <Text style={chatStyle.profileText}>{item.name[0]}</Text>
-                            </View>
+            {/* 기본 채팅방 리스트 */}
+            {!isSearchOpen && (
+                <FlatList
+                    data={real_data}
+                    keyExtractor={(item) => item.roomid}
+                    style={chatStyle.listWrapper}
+                    renderItem={({ item }) => (
+                        <Link
+                            href={{
+                                pathname: `../../(stack)/(dummy)/${item.roomid}`,
+                                params: { id: String(item.roomid), color: item.color }
+                            }}
+                            asChild
+                        >
+                            <TouchableOpacity style={chatStyle.chatCard}>
+                                
+                                {/* 프로필 색깔 원 */}
+                                <View style={[chatStyle.profileCircle, { backgroundColor: item.color }]}>
+                                    <Text style={chatStyle.profileText}>{item.name[0]}</Text>
+                                </View>
 
-                            <View style={chatStyle.chatInfo}>
-                                {/* 닉네임 대신 방 제목 표시 */}
-                                <Text style={chatStyle.nickname}>{item.name}</Text>
-                                {/* 채팅방 태그 표시 */}
-                                <Text style={chatStyle.roomTag}>{item.tags}</Text> 
-                                {/*<Text numberOfLines={1} style={chatStyle.lastMessage}>{item.last}</Text>*/}
-                            </View>
+                                {/* 이름 + 태그 */}
+                                {/* 이름 + 태그 */}
+                                <View style={{ flex: 1 }}>
+                                    <Text style={chatStyle.nickname}>{item.name}</Text>
+
+                                    {item.tags && (
+                                        <Text style={chatStyle.roomTag}>
+                                            #{String(item.tags).replace(/^#/, "")}
+                                        </Text>
+                                    )}
+                                </View>
+                            </TouchableOpacity>
+                        </Link>
+                    )}
+                />
+            )}
+
+            {/* ---------------- 중앙 팝업 검색 UI ---------------- */}
+            {isSearchOpen && (
+                <>
+                    {/* 반투명 배경 */}
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: 0, left: 0, right: 0, bottom: 0,
+                            backgroundColor: 'rgba(0,0,0,0.15)',
+                        }}
+                    />
+
+                    {/* 중앙 팝업 박스 */}
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: '20%',
+                            left: '5%',
+                            right: '5%',
+                            backgroundColor: 'white',
+                            borderRadius: 24,
+                            paddingVertical: 20,
+                            paddingHorizontal: 20,
+                            shadowColor: '#000',
+                            shadowOpacity: 0.15,
+                            shadowRadius: 12,
+                            elevation: 6,
+                        }}
+                    >
+                        {/* 닫기 */}
+                        <TouchableOpacity
+                            onPress={() => setIsSearchOpen(false)}
+                            style={{ alignSelf: 'flex-end', marginBottom: 8 }}
+                        >
+                            <Ionicons name="close" size={32} color="#5678FF" />
                         </TouchableOpacity>
-                    </Link>
-                )}
-            />
+
+                        {/* 채팅방 검색 */}
+                        <View
+                            style={{
+                                marginTop: 5,
+                                borderRadius: 14,
+                                backgroundColor: '#F5F6FA',
+                                paddingVertical: 12,
+                                paddingHorizontal: 12,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Ionicons name="search" size={20} color="#5678FF" style={{ marginRight: 10 }} />
+
+                            <TextInput
+                                placeholder="채팅방 검색…"
+                                value={roomKeyword}
+                                onChangeText={setRoomKeyword}
+                                style={{ flex: 1, fontSize: 15 }}
+                            />
+
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (!roomKeyword.trim()) return;
+                                    console.log("채팅방 검색 실행:", roomKeyword);
+                                }}
+                                style={{
+                                    backgroundColor: '#5678FF',
+                                    paddingVertical: 8,
+                                    paddingHorizontal: 14,
+                                    borderRadius: 12,
+                                    marginLeft: 8,
+                                }}
+                            >
+                                <Text style={{ color: 'white', fontWeight: '700' }}>검색</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* 태그 검색 */}
+                        <View
+                            style={{
+                                marginTop: 15,
+                                backgroundColor: '#F5F6FA',
+                                borderRadius: 14,
+                                padding: 12,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Ionicons name="pricetag-outline" size={20} color="#5678FF" style={{ marginRight: 10 }} />
+
+                            <TextInput
+                                placeholder="태그 입력 (예: 우울)"
+                                value={tagInput}
+                                onChangeText={setTagInput}
+                                style={{ flex: 1, fontSize: 15 }}
+                            />
+
+                            <TouchableOpacity
+                                onPress={handleTagSearch}
+                                style={{
+                                    backgroundColor: '#5678FF',
+                                    paddingVertical: 8,
+                                    paddingHorizontal: 14,
+                                    borderRadius: 12,
+                                }}
+                            >
+                                <Text style={{ color: 'white', fontWeight: '700' }}>추가</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        {/* 검색 결과 */}
+                        <FlatList
+                            data={tagChatList}
+                            keyExtractor={(item) => String(item.roomId)}
+                            style={{ marginTop: 18, maxHeight: 250 }}
+                            renderItem={({ item }) => (
+                                <View
+                                    style={{
+                                        backgroundColor: 'white',
+                                        padding: 16,
+                                        borderRadius: 16,
+                                        marginBottom: 12,
+                                        borderWidth: 1,
+                                        borderColor: '#eee',
+                                    }}
+                                >
+                                    <Text style={{ fontSize: 16, fontWeight: '700' }}>{item.name}</Text>
+                                    <Text style={{ marginTop: 4, color: '#5678FF', fontWeight: '600' }}>
+                                        #{item.tags}
+                                    </Text>
+                                </View>
+                            )}
+                            ListEmptyComponent={
+                                <Text style={{ textAlign: 'center', marginTop: 20, color: '#777' }}>
+                                    검색 결과가 없습니다.
+                                </Text>
+                            }
+                        />
+                    </View>
+                </>
+            )}
+
+            {/* + 버튼 */}
+            {!isSearchOpen && (
+                <TouchableOpacity
+                    onPress={handleNewRoom}
+                    style={{ position: 'absolute', bottom: 30, right: 20 }}
+                >
+                    <Ionicons name="add-circle" size={60} color="#5678FF" />
+                </TouchableOpacity>
+            )}
+
         </View>
     );
 }
+

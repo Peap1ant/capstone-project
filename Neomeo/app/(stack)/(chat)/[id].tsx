@@ -104,68 +104,9 @@ export default function ChatRoomScreen() {
         setInput("");
     };
 
-    const currentRoom = {
-        roomid: roomId,
-        name: roomName,
-        tags: tagsArray,
-        color: color,
-        maxUserCnt,
-    };
-
-    // ---------- REST + STOMP 메시지 통합 & 시간 정렬 ----------
-    const normalizedNew = messages.map((m: ChatMessage) => ({
-        ...m,
-        sendTime: m.sendTime ?? new Date().toISOString(),
-    }));
-
-    const allMessages: (ChatMessage & { sendTime?: string })[] = [
-        ...messages_old,
-        ...normalizedNew,
-    ].sort(
-        (a, b) =>
-            new Date(a.sendTime ?? 0).getTime() -
-            new Date(b.sendTime ?? 0).getTime()
-    );
-
-    const formatDateLabel = (dateStr?: string) => {
-        if (!dateStr) return "";
-
-        const date = new Date(dateStr);
-        const today = new Date();
-        const yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-
-        const d = date.toDateString();
-        const t = today.toDateString();
-        const y = yesterday.toDateString();
-
-        if (d === t) return "오늘";
-        if (d === y) return "어제";
-
-        return dateStr.split("T")[0];
-    };
-
-    const finalList: ChatListItem[] = [];
-    let lastDate = "";
-
-    allMessages.forEach((msg, idx) => {
-        const timeStr = msg.sendTime ?? new Date().toISOString();
-        const msgDate = timeStr.split("T")[0];
-
-        if (msgDate !== lastDate) {
-            finalList.push({
-                _kind: "date",
-                label: formatDateLabel(timeStr),
-                key: `date-${msgDate}`,
-            });
-            lastDate = msgDate;
-        }
-
-        finalList.push({
-            ...msg,
-            _kind: "msg",
-            key: msg.id ? `msg-${msg.id}` : `msg-${timeStr}-${idx}`,
-        });
+        // WebSocket 연결
+    const { sendMessage } = useWebSocket(id, (msg) => {
+        setChatList((prev) => [...prev, msg]);
     });
 
     const renderItem = ({ item }: { item: ChatListItem }) => {

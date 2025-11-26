@@ -6,7 +6,6 @@ export const chatStyle = StyleSheet.create({
         backgroundColor: '#F8F9FB'
     },
 
-    // 버튼 배치를 위한 헤더 컨테이너 (기존 header 대체)
     headerContainer: { 
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -15,8 +14,7 @@ export const chatStyle = StyleSheet.create({
         paddingVertical: 10,
         paddingTop: 30,
     },
-    
-    // 새 채팅방 만들기 버튼 스타일
+
     newRoomButton: { 
         paddingLeft: 10,
     },
@@ -59,7 +57,6 @@ export const chatStyle = StyleSheet.create({
         marginHorizontal: 20,
         padding: 16,
         marginBottom: 12,
-
         shadowColor: '#000',
         shadowOpacity: 0.05,
         shadowRadius: 8,
@@ -83,20 +80,21 @@ export const chatStyle = StyleSheet.create({
     chatInfo: {
         flex: 1,
         marginLeft: 14,
+        justifyContent: 'center',
     },
 
     nickname: {
         fontSize: 17,
         fontWeight: '700',
-        color: '#333'
+        color: '#333',
     },
-    
-    // 채팅방 목록의 태그 스타일
+
+    // 수정된 태그 스타일
     roomTag: {
         fontSize: 13,
         fontWeight: '600',
         color: '#5678FF',
-        marginTop: 2,
+        marginTop: 6,   // 태그와 이름 사이 여백 확대
     },
 
     lastMessage: {
