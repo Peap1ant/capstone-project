@@ -94,6 +94,51 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
+
+        {/* ================================================
+                     오늘의 챌린지 섹션 추가
+        ================================================== */}
+        <View style={[styles.section, { marginTop: 10 }]}>
+          <TouchableOpacity
+            onPress={() => router.push('/(stack)/(home)/today')}
+            style={{
+              backgroundColor: '#EEF3FF',
+              borderRadius: 16,
+              paddingVertical: 20,
+              paddingHorizontal: 18,
+              shadowColor: '#000',
+              shadowOpacity: 0.1,
+              shadowRadius: 5,
+              shadowOffset: { width: 0, height: 2 },
+            }}
+          >
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View
+                style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 12,
+                  backgroundColor: '#5678FF',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Ionicons name="radio-button-on" size={22} color="white" />
+              </View>
+
+              <View style={{ marginLeft: 14 }}>
+                <Text style={{ fontSize: 18, fontWeight: '600', color: '#222' }}>
+                  오늘의 챌린지
+                </Text>
+                <Text style={{ fontSize: 14, color: '#666', marginTop: 2 }}>
+                  작은 루틴으로 하루를 바꿔보세요
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </View>
+
+
         {/*인기 채팅방 추천 섹션*/}
         <View style={[styles.section, { marginTop: 16 }]}>
           <View style={styles.sectionHeader}>
@@ -126,13 +171,12 @@ export default function HomeScreen() {
           </ScrollView>
         </View>
 
-        {/* ============================
-                자유게시판 섹션*/}
+
+        {/* 자유게시판 섹션 */}
         <View style={[styles.section, { marginTop: 30 }]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>자유게시판</Text>
 
-            {/* 커뮤니티 전체보기 */}
             <Link href="/(community)" asChild>
               <TouchableOpacity>
                 <Text style={styles.viewAllText}>더보기</Text>
@@ -141,34 +185,30 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.postList}>
-
             {latestPosts.map((item) => (
               <Pressable
                 key={item.id}
                 onPress={() => router.push(`../../(stack)/(community)/${item.id}`)}
                 style={styles.postItem}
               >
-                {/* 아이콘 동그라미 */}
+
                 <View style={styles.postIconCircle}>
                   <Ionicons name="list-outline" size={20} color="#5678FF" />
                 </View>
 
-                {/* 텍스트 내용 */}
                 <View style={styles.postContent}>
-                  {/* 게시글 제목 */}
                   <Text style={styles.postTitle} numberOfLines={1}>
                     {item.title}
                   </Text>
 
-                  {/* 작성자 + 상세 보기 */}
                   <View style={styles.postMeta}>
                     <Text style={styles.postAuthor}>{item.writerNickName || '익명'}</Text>
                     <Text style={styles.postMetaText}>• 상세 보기</Text>
                   </View>
                 </View>
+
               </Pressable>
             ))}
-
           </View>
         </View>
 
