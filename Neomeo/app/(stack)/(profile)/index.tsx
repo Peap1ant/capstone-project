@@ -24,6 +24,9 @@ export default function ProfileScreen() {
     const [ hobby, setHobby ] = useState('');
     const [ tendency, setTendency ] = useState('');
 
+    const [ mbtiOpen, setMbtiOpen ] = useState(false);
+
+
     useEffect(() => {
         const init = async () => {
             if (userInfo) {
@@ -48,6 +51,7 @@ export default function ProfileScreen() {
 
         init();
     }, [userInfo]);
+    
 
     if (loading) return <Text style={{ marginTop: 50, textAlign: 'center' }}>로딩 중...</Text>;
     if (error) return <Text style={{ marginTop: 50, textAlign: 'center' }}>{error}</Text>;
@@ -64,7 +68,7 @@ export default function ProfileScreen() {
     
 
     const handleSave = async () => {
-        if (!nickname || !email || !phone ! || !birth || !region || !mbti || !hobby || !tendency) {
+        if (!nickname || !email || !phone || !birth || !region || !mbti || !hobby || !tendency) {
             alert('모든 정보를 입력해주세요.');
             return;
         }
@@ -190,20 +194,51 @@ export default function ProfileScreen() {
                     {/* MBTI */}
                     <Text style={editStyles.extraLabel}>MBTI</Text>
 
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {mbtiList.map(item => (
-                            <TouchableOpacity
-                                key={item}
-                                style={[
-                                    editStyles.mbtiChip,
-                                    mbti === item && editStyles.mbtiChipActive
-                                ]}
-                                onPress={() => setMbti(item)}
-                            >
-                                <Text>{item}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
+                    <View style={{ marginBottom: 12 }}>
+                        {/* 선택 박스 (버튼처럼 보이는 부분) */}
+                        <TouchableOpacity
+                            style={[
+                                editStyles.input,
+                                {
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                },
+                            ]}
+                            onPress={() => setMbtiOpen(prev => !prev)}
+                        >
+                            <Text>
+                                {mbti ? mbti : "MBTI를 선택하세요"}
+                            </Text>
+                            <Ionicons
+                                name={mbtiOpen ? "chevron-up" : "chevron-down"}
+                                size={18}
+                                color="#666"
+                            />
+                        </TouchableOpacity>
+
+                        {/* 드롭다운 영역 */}
+                        {mbtiOpen && (
+                            <View style={ editStyles.dropdown}>
+                                {mbtiList.map((item) => (
+                                    <TouchableOpacity
+                                        key={item}
+                                        style={[
+                                            editStyles.mbtiChip,
+                                            mbti === item && editStyles.mbtiChipActive,
+                                        ]}
+                                        onPress={() => {
+                                            setMbti(item);
+                                            setMbtiOpen(false);
+                                        }}
+                                    >
+                                        <Text>{item}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        )}
+                    </View>
+
 
                     {/* 성향 */}
                     <Text style={editStyles.extraLabel}>성향</Text>
