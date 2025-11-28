@@ -13,5 +13,5 @@
     "**/*.ts",
     "**/*.tsx",
     "app/(styles)/test_style.tsx"
-  ]
+, "app/(screen)/(logout)/index.tsx"  ]
 }

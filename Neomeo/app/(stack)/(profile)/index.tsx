@@ -1,38 +1,61 @@
 import React, { useState, useEffect } from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    ScrollView,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { editStyles } from "@/app/(styles)/edit_account_style";
-
 import { useUserData } from "@/src/(api)/useUserData";
-
-// 로컬 저장
-import {
-    getAllProfileItems,
-    setProfileItem
-} from "@/src/storage/profileStorage";
+import { setStorage, getStorage } from "@/src/(storage)/storage";
+import SafeScroll from "@/src/(components)/SafeScroll";
+import SafeContainer from "@/src/(components)/SafeContainer";
+import api from "@/src/(api)/api";
 
 export default function ProfileScreen() {
     const router = useRouter();
-    const { userInfo } = useUserData();
+    const { userInfo, loading, error } = useUserData();
 
-    // 서버 값 + 로컬 값 상태 저장
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [ nickname, setNickname ] = useState('');
+    const [ email, setEmail ] = useState('');
 
-    const [phone, setPhone] = useState("");
-    const [birth, setBirth] = useState("");
-    const [region, setRegion] = useState("");
+    const [ phone, setPhone ] = useState('');
+    const [ birth, setBirth ] = useState('');
+    const [ region, setRegion ] = useState('');
 
-    const [mbti, setMbti] = useState("INTP");
-    const [tendency, setTendency] = useState("");
-    const [hobby, setHobby] = useState("");
+    const [ mbti, setMbti ] = useState('');
+    const [ hobby, setHobby ] = useState('');
+    const [ tendency, setTendency ] = useState('');
+
+    const [ mbtiOpen, setMbtiOpen ] = useState(false);
+
+
+    useEffect(() => {
+        const init = async () => {
+            if (userInfo) {
+                setNickname(userInfo.nickname || '');
+                setEmail(userInfo.email || '');
+            }
+
+            const storedPhone = await getStorage('phone')
+            const storedBirth = await getStorage('birth')
+            const storedRegion = await getStorage('region')
+            const storedMbti = await getStorage('mbti')
+            const storedHobby = await getStorage('hobby')
+            const storedTendency = await getStorage('tendency')
+
+            if (storedPhone) setPhone(storedPhone);
+            if (storedBirth) setBirth(storedBirth);
+            if (storedRegion) setRegion(storedRegion);
+            if (storedMbti) setMbti(storedMbti);
+            if (storedHobby) setHobby(storedHobby);
+            if (storedTendency) setTendency(storedTendency);
+        };
+
+        init();
+    }, [userInfo]);
+    
+
+    if (loading) return <Text style={{ marginTop: 50, textAlign: 'center' }}>로딩 중...</Text>;
+    if (error) return <Text style={{ marginTop: 50, textAlign: 'center' }}>{error}</Text>;
+    if (!userInfo) return <Text style={{ marginTop: 50, textAlign: 'center' }}>데이터가 없습니다.</Text>;
 
     // MBTI 목록
     const mbtiList = [
@@ -42,48 +65,60 @@ export default function ProfileScreen() {
         "ISTP","ISFP","ESTP","ESFP"
     ];
 
-    /** 최초 로드 → 서버 정보 + 로컬 정보 불러와서 상태 채우기 */
-    useEffect(() => {
-        if (!userInfo) return;
+    
 
-        // 서버 값
-        setName(userInfo.nickname || "");
-        setEmail(userInfo.email || "");
-
-        // 로컬 프로필 값 불러오기
-        (async () => {
-            const stored = await getAllProfileItems();
-            if (stored) {
-                setPhone(stored.phone);
-                setBirth(stored.birth);
-                setRegion(stored.region);
-                setMbti(stored.mbti || "INTP");
-                setTendency(stored.tendency);
-                setHobby(stored.hobby);
-            }
-        })();
-    }, [userInfo]);
-
-    /** 저장 버튼 */
     const handleSave = async () => {
-        await setProfileItem("profile_phone", phone);
-        await setProfileItem("profile_birth", birth);
-        await setProfileItem("profile_region", region);
-        await setProfileItem("profile_mbti", mbti);
-        await setProfileItem("profile_tendency", tendency);
-        await setProfileItem("profile_hobby", hobby);
+        if (!nickname || !email || !phone || !birth || !region || !mbti || !hobby || !tendency) {
+            alert('모든 정보를 입력해주세요.');
+            return;
+        }
 
-        alert("저장되었습니다!");
-        router.back();
+        console.log(`유저 정보 수정, nickname ${nickname} email ${email}`);
+
+        const json_field = {
+            nickname: String(nickname).trim(),
+            email: email,
+            username: userInfo.username
+        }
+
+        try {
+            const res = await api.put('/user', json_field)
+
+            if (res.status === 200 || res.status === 201) {
+                Alert.alert('유저 정보 수정 성공', '메인 화면으로 이동합니다.');
+                router.replace('../../(screen)/(home)');
+            } else {
+                Alert.alert('유저 정보 수정 실패', `서버 응답 코드: ${res.status}`);
+            }
+        } catch (error: any) {
+            console.error('유저 정보 수정 중 오류:', error);
+            if (error.response) {
+                Alert.alert('서버 오류', `상태 코드: ${error.response.status}\n${error.response.data?.message || '회원가입 실패'}`);
+            } else {
+                Alert.alert('네트워크 오류', '서버에 연결할 수 없습니다.');
+            }
+        }
+
+        console.log('나머지 정보 저장')
+
+        await setStorage('phone', phone)
+        await setStorage('birth', birth)
+        await setStorage('region', region)
+        await setStorage('mbti', mbti)
+        await setStorage('hobby', hobby)
+        await setStorage('tendency', tendency)
+
+        alert('프로필이 수정되었습니다.')
+
+        router.replace('../(screen)/(more)/')
     };
 
-
     return (
-        <View style={{ flex: 1, backgroundColor: "#f9f9fb" }}>
+        <SafeContainer style={{ flex: 1, backgroundColor: "#f9f9fb" }}>
 
             {/* 헤더 */}
             <View style={editStyles.header}>
-                <TouchableOpacity onPress={() => router.back()}>
+                <TouchableOpacity onPress={() => router.replace('../(screen)/(more)/')}>
                     <Ionicons name="chevron-back" size={28} color="#444" />
                 </TouchableOpacity>
 
@@ -95,16 +130,16 @@ export default function ProfileScreen() {
                 </TouchableOpacity>
             </View>
 
-            <ScrollView style={{ paddingHorizontal: 16 }}>
+            <SafeScroll style={{ paddingHorizontal: 16 }}>
 
                 {/* 이름 */}
                 <View style={editStyles.inputCard}>
-                    <Text style={editStyles.inputLabel}>이름</Text>
+                    <Text style={editStyles.inputLabel}>닉네임(로그인 아이디)</Text>
                     <TextInput
                         style={editStyles.input}
-                        value={name}
-                        onChangeText={setName}
-                        placeholder="이름 입력"
+                        value={nickname}
+                        onChangeText={setNickname}
+                        placeholder={nickname}
                     />
                 </View>
 
@@ -115,7 +150,7 @@ export default function ProfileScreen() {
                         style={editStyles.input}
                         value={email}
                         onChangeText={setEmail}
-                        placeholder="이메일 입력"
+                        placeholder={userInfo.email}
                     />
                 </View>
 
@@ -148,7 +183,7 @@ export default function ProfileScreen() {
                         style={editStyles.input}
                         value={region}
                         onChangeText={setRegion}
-                        placeholder="지역 입력"
+                        placeholder="지역 입력(예시: 서울)"
                     />
                 </View>
 
@@ -159,20 +194,51 @@ export default function ProfileScreen() {
                     {/* MBTI */}
                     <Text style={editStyles.extraLabel}>MBTI</Text>
 
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                        {mbtiList.map(item => (
-                            <TouchableOpacity
-                                key={item}
-                                style={[
-                                    editStyles.mbtiChip,
-                                    mbti === item && editStyles.mbtiChipActive
-                                ]}
-                                onPress={() => setMbti(item)}
-                            >
-                                <Text>{item}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
+                    <View style={{ marginBottom: 12 }}>
+                        {/* 선택 박스 (버튼처럼 보이는 부분) */}
+                        <TouchableOpacity
+                            style={[
+                                editStyles.input,
+                                {
+                                    flexDirection: "row",
+                                    alignItems: "center",
+                                    justifyContent: "space-between",
+                                },
+                            ]}
+                            onPress={() => setMbtiOpen(prev => !prev)}
+                        >
+                            <Text>
+                                {mbti ? mbti : "MBTI를 선택하세요"}
+                            </Text>
+                            <Ionicons
+                                name={mbtiOpen ? "chevron-up" : "chevron-down"}
+                                size={18}
+                                color="#666"
+                            />
+                        </TouchableOpacity>
+
+                        {/* 드롭다운 영역 */}
+                        {mbtiOpen && (
+                            <View style={ editStyles.dropdown}>
+                                {mbtiList.map((item) => (
+                                    <TouchableOpacity
+                                        key={item}
+                                        style={[
+                                            editStyles.mbtiChip,
+                                            mbti === item && editStyles.mbtiChipActive,
+                                        ]}
+                                        onPress={() => {
+                                            setMbti(item);
+                                            setMbtiOpen(false);
+                                        }}
+                                    >
+                                        <Text>{item}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </View>
+                        )}
+                    </View>
+
 
                     {/* 성향 */}
                     <Text style={editStyles.extraLabel}>성향</Text>
@@ -180,7 +246,7 @@ export default function ProfileScreen() {
                         style={editStyles.input}
                         value={tendency}
                         onChangeText={setTendency}
-                        placeholder="예: 내향적"
+                        placeholder="예시: 내향적"
                     />
 
                     {/* 취미 */}
@@ -193,7 +259,7 @@ export default function ProfileScreen() {
                     />
                 </View>
 
-            </ScrollView>
-        </View>
+            </SafeScroll>
+        </SafeContainer>
     );
 }

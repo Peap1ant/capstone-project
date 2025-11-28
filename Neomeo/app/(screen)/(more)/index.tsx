@@ -1,39 +1,39 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import { useFocusEffect } from "@react-navigation/native";
-
 import SafeScroll from "@/src/(components)/SafeScroll";
 import { styles } from "@/app/(styles)/main_style";
 import { more_tab_styles } from "@/app/(styles)/more_tab_style";
-
 import { useUserData } from "@/src/(api)/useUserData";
 import { useAuth } from "@/src/(auth)/AuthContext";
-import { getAllProfileItems } from "@/src/storage/profileStorage";
+import { getStorage } from "@/src/(storage)/storage";
 
 export default function MoreScreen() {
     const { userInfo } = useUserData();
     const { logout } = useAuth();
+    const [ mbti, setMbti ] = useState('미입력');
+    const [ hobby, setHobby ] = useState('미입력');
+    const [ tendency, setTendency ] = useState('미입력');
 
-    const [profile, setProfile] = useState({
-        mbti: "",
-        tendency: "",
-        hobby: ""
-    });
+    useEffect(() => {
+        const init = async () => {
+            const storedPhone = await getStorage('phone')
+            const storedBirth = await getStorage('birth')
+            const storedRegion = await getStorage('region')
+            const storedMbti = await getStorage('mbti')
+            const storedHobby = await getStorage('hobby')
+            const storedTendency = await getStorage('tendency')
 
-    useFocusEffect(
-        useCallback(() => {
-            (async () => {
-                const stored = await getAllProfileItems();
-                setProfile({
-                    mbti: stored.mbti,
-                    tendency: stored.tendency,
-                    hobby: stored.hobby
-                });
-            })();
-        }, [])
-    );
+            if (storedMbti) setMbti(storedMbti);
+            if (storedHobby) setHobby(storedHobby);
+            if (storedTendency) setTendency(storedTendency);
+        };
+    
+        init();
+    }, [userInfo]);
+        
 
     return (
         <SafeScroll>
@@ -57,21 +57,21 @@ export default function MoreScreen() {
                     <View style={more_tab_styles.card}>
                         <Text style={more_tab_styles.cardTitle}>MBTI</Text>
                         <Text style={more_tab_styles.cardValue}>
-                            {profile.mbti || "미입력"}
+                            {mbti}
                         </Text>
                     </View>
 
                     <View style={more_tab_styles.card}>
                         <Text style={more_tab_styles.cardTitle}>성향</Text>
                         <Text style={more_tab_styles.cardValue}>
-                            {profile.tendency || "미입력"}
+                            {tendency}
                         </Text>
                     </View>
 
                     <View style={more_tab_styles.card}>
-                        <Text style={more_tab_styles.cardTitle}>활동</Text>
+                        <Text style={more_tab_styles.cardTitle}>취미</Text>
                         <Text style={more_tab_styles.cardValue}>
-                            {profile.hobby || "미입력"}
+                            {hobby}
                         </Text>
                     </View>
                 </View>

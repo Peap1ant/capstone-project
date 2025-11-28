@@ -105,12 +105,12 @@ export const editStyles = StyleSheet.create({
         marginBottom: 6,
         color: "#333",
     },
-        mbtiChip: {
+    
+    mbtiChip: {
         paddingHorizontal: 12,
         paddingVertical: 8,
-        borderRadius: 20,
         borderWidth: 1,
-        borderColor: "#999",
+        borderColor: "#ccc",
         marginRight: 8,
         backgroundColor: "#f2f2f2",
     },
@@ -119,5 +119,17 @@ export const editStyles = StyleSheet.create({
         backgroundColor: "#ffd86b",
         borderColor: "#e6b800",
     },
+
+    dropdown: {
+        marginTop: 6,
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 8,
+        backgroundColor: "#fff",
+        padding: 8,
+        gap: 8,
+        flexDirection: "row",
+        flexWrap: "wrap",
+    }
 
 });
