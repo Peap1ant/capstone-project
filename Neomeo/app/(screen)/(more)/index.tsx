@@ -1,97 +1,111 @@
-import { useEffect, useState }from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import { useCallback, useState } from "react";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-import { LinkProps } from "expo-router";
-import SafeScroll from '../../../src/(components)/SafeScroll';
-import { styles } from '../../(styles)/main_style';
-import { more_tab_styles } from '../../(styles)/more_tab_style'
-import { useUserData } from '@/src/(api)/useUserData'
+import { useFocusEffect } from "@react-navigation/native";
+
+import SafeScroll from "@/src/(components)/SafeScroll";
+import { styles } from "@/app/(styles)/main_style";
+import { more_tab_styles } from "@/app/(styles)/more_tab_style";
+
+import { useUserData } from "@/src/(api)/useUserData";
 import { useAuth } from "@/src/(auth)/AuthContext";
+import { getAllProfileItems } from "@/src/storage/profileStorage";
 
 export default function MoreScreen() {
+    const { userInfo } = useUserData();
+    const { logout } = useAuth();
 
-    const { userInfo, error, loading } = useUserData();
+    const [profile, setProfile] = useState({
+        mbti: "",
+        tendency: "",
+        hobby: ""
+    });
 
-    if (loading) return <Text>로딩 중...</Text>;
-    if (error) return <Text>{error}</Text>;
-    if (!userInfo) return <Text>데이터가 없습니다.</Text>;
-
-    console.log(userInfo)
-
-    const userDatafield = {
-
-        nickname: userInfo.nickname,
-        name: userInfo.username,
-        profileImage: require('../../../assets/images/react-logo.png'), 
-        traits: [
-            { title: "MBTI", value: "INTP" },
-            { title: "성향", value: "내향적" },
-            { title: "활동", value: "독서/코딩" },
-        ],
-    };
-
-    const { logout } = useAuth()
-
-    const handleLogout = async () => {
-        await logout()
-    }
-
-    const menuItems = [
-        { icon: "person-outline", label: "개인정보 관리", href: "../(stack)/(profile)", command: NaN },
-        { icon: "accessibility-outline", label: "프로필 수정", href: "../(stack)/(dummy)", command: NaN },
-        { icon: "add", label: "친구 추가", href: "../(stack)/(dummy)", command: NaN },
-        { icon: "albums-outline", label: "내 게시판 글", href: "../(stack)/(dummy)", command: NaN },
-        { icon: "bookmarks-outline", label: "스크랩한 글", href: "../(stack)/(dummy)", command: NaN },
-        { icon: "arrow-up-left-box-outline", label: "도움 받기", href: "../(stack)/(dummy)", command: NaN },
-        { icon: "book-outline", label: "도움이 되는 말", href: "../(stack)/(dummy)", command: NaN },
-    ];
+    useFocusEffect(
+        useCallback(() => {
+            (async () => {
+                const stored = await getAllProfileItems();
+                setProfile({
+                    mbti: stored.mbti,
+                    tendency: stored.tendency,
+                    hobby: stored.hobby
+                });
+            })();
+        }, [])
+    );
 
     return (
         <SafeScroll>
             <ScrollView style={styles.container}>
-            <View style={more_tab_styles.profileSection}>
-                <Image source={userDatafield.profileImage} style={more_tab_styles.profileImage} />
-                <Text style={more_tab_styles.profileNickname}>{userDatafield.nickname} 님</Text>
-                <Text style={more_tab_styles.profileName}>안녕하세요, {userDatafield.name} 님</Text>
-            </View>
-            <View style={more_tab_styles.cardContainer}>
-                {userDatafield.traits.map((trait, index) => (
-                <View key={index} style={more_tab_styles.card}>
-                    <Text style={more_tab_styles.cardTitle}>{trait.title}</Text>
-                    <Text style={more_tab_styles.cardValue}>{trait.value}</Text>
+                <View style={more_tab_styles.profileSection}>
+                    <Image
+                        source={require("../../../assets/images/react-logo.png")}
+                        style={more_tab_styles.profileImage}
+                    />
+
+                    <Text style={more_tab_styles.profileNickname}>
+                        {userInfo?.nickname} 님
+                    </Text>
+
+                    <Text style={more_tab_styles.profileName}>
+                        안녕하세요, {userInfo?.username} 님
+                    </Text>
                 </View>
-                ))}
-            </View>
-            <View style={more_tab_styles.menuList}>
-                {menuItems.map((item, index) => (
-                <MenuItem key={index} icon={item.icon} label={item.label} href={item.href} />
-                ))}
-            </View>
-            <TouchableOpacity
-                onPress={handleLogout}
-                style={{
-                marginTop: 20,
-                paddingHorizontal: 16,
-                paddingVertical: 10,
-                borderRadius: 8,
-                backgroundColor: '#ff5555',
-                }}
-            >
-                <Text style={{ color: 'white', fontWeight: 'bold' }}>로그아웃</Text>
-            </TouchableOpacity>
+
+                <View style={more_tab_styles.cardContainer}>
+                    <View style={more_tab_styles.card}>
+                        <Text style={more_tab_styles.cardTitle}>MBTI</Text>
+                        <Text style={more_tab_styles.cardValue}>
+                            {profile.mbti || "미입력"}
+                        </Text>
+                    </View>
+
+                    <View style={more_tab_styles.card}>
+                        <Text style={more_tab_styles.cardTitle}>성향</Text>
+                        <Text style={more_tab_styles.cardValue}>
+                            {profile.tendency || "미입력"}
+                        </Text>
+                    </View>
+
+                    <View style={more_tab_styles.card}>
+                        <Text style={more_tab_styles.cardTitle}>활동</Text>
+                        <Text style={more_tab_styles.cardValue}>
+                            {profile.hobby || "미입력"}
+                        </Text>
+                    </View>
+                </View>
+
+                <View style={more_tab_styles.menuList}>
+                    <MenuItem icon="person-outline" label="개인정보 관리" href="../(stack)/(profile)" />
+                    <MenuItem icon="add" label="친구 추가" href="../(stack)/(dummy)" />
+                    <MenuItem icon="albums-outline" label="내 게시판 글" href="../(stack)/(dummy)" />
+                </View>
+
+                <TouchableOpacity
+                    onPress={logout}
+                    style={{
+                        marginTop: 20,
+                        paddingHorizontal: 16,
+                        paddingVertical: 10,
+                        borderRadius: 8,
+                        backgroundColor: "#ff5555",
+                    }}
+                >
+                    <Text style={{ color: "white", fontWeight: "bold" }}>로그아웃</Text>
+                </TouchableOpacity>
             </ScrollView>
         </SafeScroll>
     );
 }
 
-function MenuItem({ icon, label, href }: { icon: any; label: string; href: any }) {
+function MenuItem({ icon, label, href }: any) {
     return (
         <Link href={href} asChild>
-        <TouchableOpacity style={more_tab_styles.menuItem}>
-            <Ionicons name={icon} size={20} color="#555" style={{ marginRight: 10 }} />
-            <Text style={more_tab_styles.menuText}>{label}</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={more_tab_styles.menuItem}>
+                <Ionicons name={icon} size={20} color="#555" style={{ marginRight: 10 }} />
+                <Text style={more_tab_styles.menuText}>{label}</Text>
+            </TouchableOpacity>
         </Link>
     );
 }
