@@ -32,7 +32,7 @@ export default function TestScreen() {
         >
             {/* 제목 */}
             <Text style={{ fontSize: 22, marginBottom: 20 }}>
-                로그아웃 테스트 화면
+                문제가 있으면 로그아웃을 시도해보세요
             </Text>
 
             {/* 로그아웃 버튼 */}
