@@ -105,7 +105,8 @@ export const editStyles = StyleSheet.create({
         marginBottom: 6,
         color: "#333",
     },
-        mbtiChip: {
+    
+    mbtiChip: {
         paddingHorizontal: 12,
         paddingVertical: 8,
         borderWidth: 1,
@@ -127,6 +128,8 @@ export const editStyles = StyleSheet.create({
         backgroundColor: "#fff",
         padding: 8,
         gap: 8,
+        flexDirection: "row",
+        flexWrap: "wrap",
     }
 
 });
