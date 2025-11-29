@@ -46,6 +46,7 @@ export default function ChatList() {
         roomid: item.roomId,
         name: item.name,
         tags: item.tags,
+        maxUserCnt: item.maxUserCnt,
         color: random_color().color
     }));
 
@@ -86,7 +87,7 @@ export default function ChatList() {
                         <Link
                             href={{
                                 pathname: `../../chattingRoom/${item.roomid}`,
-                                params: { id: String(item.roomid), color: item.color }
+                                params: { id: String(item.roomid), color: item.color, name: item.name, tags: item.tags, maxUserCnt: item.maxUserCnt  }
                             }}
                             asChild
                         >

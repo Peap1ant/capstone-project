@@ -145,6 +145,8 @@ export default function ChatRoomScreen() {
     const isMine = item.sender === username;
     const isEnter = item.type === "ENTER";
 
+    console.log('방 정보', roomName)
+
     return (
       <View style={{ marginVertical: 4 }}>
         {!isEnter && !isMine && (

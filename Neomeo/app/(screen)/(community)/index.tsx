@@ -26,7 +26,7 @@ export default function CommunityScreen() {
             {/* 헤더 */}
             <View style={communityStyle.newHeader}>
 
-                <Text style={communityStyle.newHeaderTitle}>게시판</Text>
+                <Text style={communityStyle.newHeaderTitle}>커뮤니티</Text>
                 <Link href = {'../(stack)/(community)/createContent'}>
                     <TouchableOpacity>
                         <Ionicons name="add-circle-outline" size={32} color="#53a8eb" />
@@ -34,7 +34,7 @@ export default function CommunityScreen() {
                 </Link>
             </View>
             <View style = {styles.content_center}>
-                <Text style={communityStyle.cardTitle}>아직 게시판에 글이 없습니다! 작성해보세요!</Text>
+                <Text style={communityStyle.cardTitle}>아직 커뮤니티에 글이 없습니다! 작성해보세요!</Text>
             </View>
         </SafeContainer>
         )
@@ -56,7 +56,7 @@ export default function CommunityScreen() {
             {/* 헤더 */}
             <View style={communityStyle.newHeader}>
 
-                <Text style={communityStyle.newHeaderTitle}>게시판</Text>
+                <Text style={communityStyle.newHeaderTitle}>커뮤니티</Text>
                 <Link href = {'../(stack)/(community)/createContent'}>
                     <TouchableOpacity>
                         <Ionicons name="add-circle-outline" size={32} color="#53a8eb" />

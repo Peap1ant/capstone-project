@@ -188,7 +188,7 @@ export default function HomeScreen() {
             {latestPosts.map((item) => (
               <Pressable
                 key={item.id}
-                onPress={() => router.push(`../../(stack)/(community)/${item.id}`)}
+                onPress={() => router.push(`../../communityContent/${item.id}`)}
                 style={styles.postItem}
               >
 
