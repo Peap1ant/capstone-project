@@ -1,9 +1,10 @@
 // app/(stack)/(challenge)/diary.tsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { getStorage, setStorage } from '@/src/(storage)/storage';
 
 export default function DiaryChallengeScreen() {
   const router = useRouter();
@@ -21,6 +22,31 @@ export default function DiaryChallengeScreen() {
     { id: 'sad', icon: 'sad-outline', label: '슬픔', color: '#AAC8FF' },
     { id: 'angry', icon: 'flame-outline', label: '화남', color: '#FF9F9F' },
   ];
+
+  useEffect(() => {
+            const init = async () => {
+              const storedEmotion = await getStorage('emotion');
+              const storedNote = await getStorage('note');
+  
+              if (storedEmotion) setEmotion(storedEmotion);
+              if (storedNote) setNote(storedNote);
+            };
+    
+            init();
+        }, []);
+  
+      const handleGoal = async () => {
+         if (!emotion || !note) {
+              alert('모든 정보를 입력해주세요.');
+              return;
+          }
+  
+          await setStorage('emotion', emotion);
+          await setStorage('note', note);
+  
+          console.log('상태 저장됨')
+          alert('일기를 저장했어요')
+      }
 
   return (
     <ScrollView
@@ -137,6 +163,25 @@ export default function DiaryChallengeScreen() {
         <Text style={{ fontSize: 16, fontWeight: '600' }}>캘린더 메모 추가</Text>
         <Text style={{ fontSize: 13, color: '#666', marginTop: 4 }}>
           특정 날짜에 메모를 남길 수 있어요.
+        </Text>
+      </TouchableOpacity>
+
+      {/* 저장 버튼 */}
+      <TouchableOpacity
+        onPress={() => handleGoal()}
+        style={{
+          backgroundColor: '#5680FF',
+          marginTop: 30,
+          marginHorizontal: 20,
+          paddingVertical: 18,
+          borderRadius: 16,
+          justifyContent: 'center',
+          alignItems: 'center',
+          elevation: 3,
+        }}
+      >
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: '600' }}>
+          오늘 일기 저장
         </Text>
       </TouchableOpacity>
 

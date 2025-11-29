@@ -1,9 +1,10 @@
 // app/(stack)/(challenge)/goal.tsx
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { getStorage, setStorage } from '@/src/(storage)/storage';
 
 export default function GoalChallengeScreen() {
   const router = useRouter();
@@ -11,6 +12,31 @@ export default function GoalChallengeScreen() {
   // 목표 텍스트 & 완료 여부
   const [goal, setGoal] = useState('');
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+          const init = async () => {
+            const storedGoal = await getStorage('chal_goal');
+            const storedDone = await Boolean(getStorage('chal_goal_done'));
+
+            if (storedGoal) setGoal(storedGoal);
+            if (storedDone) setDone(storedDone);
+          };
+  
+          init();
+      }, []);
+
+    const handleGoal = async () => {
+       if (!goal || !done) {
+            alert('모든 정보를 입력해주세요.');
+            return;
+        }
+
+        await setStorage('chal_goal', goal);
+        await setStorage('chal_goal_done', String(done));
+
+        console.log('상태 저장됨')
+        alert('목표와 상태를 저장했어요')
+    }
 
   return (
     <ScrollView
@@ -110,7 +136,7 @@ export default function GoalChallengeScreen() {
 
       {/* 저장 버튼 */}
       <TouchableOpacity
-        onPress={() => console.log('오늘 목표 저장:', goal)}
+        onPress={() => handleGoal()}
         style={{
           backgroundColor: '#5680FF',
           marginTop: 30,

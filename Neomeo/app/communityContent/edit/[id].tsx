@@ -84,7 +84,7 @@ export default function CreateContent() {
         try {
             setSubmitting(true);
             await api.put(`/api/boards/${numericId}`, json_field);
-            router.replace("../../(screen)");
+            router.replace("../../(screen)/(community)/");
         } catch (error: any) {
             console.log("게시물 게시 실패", error);
             Alert.alert("오류", "게시물 등록 중 문제가 발생했습니다.");

@@ -9,10 +9,10 @@ export default function WalkChallengeScreen() {
   const router = useRouter();
 
   // 걸음 수, 햇빛 시간 상태
-  const [steps, setSteps] = useState(3542);
+  const [steps, setSteps] = useState(0);
   const stepGoal = 10000;
 
-  const [sunTime, setSunTime] = useState(15);
+  const [sunTime, setSunTime] = useState(0);
   const sunGoal = 30;
 
   return (

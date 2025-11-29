@@ -34,12 +34,12 @@ export default function ProfileScreen() {
                 setEmail(userInfo.email || '');
             }
 
-            const storedPhone = await getStorage('phone')
-            const storedBirth = await getStorage('birth')
-            const storedRegion = await getStorage('region')
-            const storedMbti = await getStorage('mbti')
-            const storedHobby = await getStorage('hobby')
-            const storedTendency = await getStorage('tendency')
+            const storedPhone = await getStorage('phone');
+            const storedBirth = await getStorage('birth');
+            const storedRegion = await getStorage('region');
+            const storedMbti = await getStorage('mbti');
+            const storedHobby = await getStorage('hobby');
+            const storedTendency = await getStorage('tendency');
 
             if (storedPhone) setPhone(storedPhone);
             if (storedBirth) setBirth(storedBirth);

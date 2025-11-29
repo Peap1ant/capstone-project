@@ -143,7 +143,11 @@ export default function HomeScreen() {
         <View style={[styles.section, { marginTop: 16 }]}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}># 인기 채팅방 추천</Text>
-            <TouchableOpacity><Text style={styles.viewAllText}>전체보기</Text></TouchableOpacity>
+            <Link href='/(chat)' asChild>
+              <TouchableOpacity>
+                <Text style={styles.viewAllText}>전체보기</Text>
+              </TouchableOpacity>
+            </Link>
           </View>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
