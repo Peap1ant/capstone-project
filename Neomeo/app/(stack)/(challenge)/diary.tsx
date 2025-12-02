@@ -68,7 +68,7 @@ export default function DiaryChallengeScreen() {
         </TouchableOpacity>
 
         <Text style={{ fontSize: 20, fontWeight: '700', marginLeft: 10 }}>
-          일기 · 필기 · 캘린더
+          일기
         </Text>
       </View>
 

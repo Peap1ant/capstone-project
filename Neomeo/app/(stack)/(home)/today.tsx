@@ -28,7 +28,7 @@ export default function TodayChallengeScreen() {
     },
     {
       id: 3,
-      title: '일기·필기·캘린더',
+      title: '일기',
       desc: '감정 기록 + 메모',
       icon: 'book-outline',
       bg: '#F9E8FF',
