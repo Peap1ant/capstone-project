@@ -50,7 +50,7 @@ export default function CommunityDetailScreen() {
         try {
             const res = await deleteCommunity(numericId); // 없으면 왜 안되는거지
             console.log("삭제 완료:");
-            router.replace("../../(screen)");
+            router.replace("../../(screen)/(community)/");
         } catch (e) {
             console.log("삭제 중 에러:", e);
             Alert.alert("삭제 실패", "삭제 중 오류가 발생했습니다.");
@@ -70,7 +70,7 @@ export default function CommunityDetailScreen() {
         // 🔹 여기서 수정 화면으로 이동 (라우팅 경로는 프로젝트 구조에 맞게 바꿔줘!)
         // 예시: /community/edit/[id]
         router.push({
-            pathname: "/(screen)/community/edit",
+            pathname: `./edit/${id}`,
             params: { id: communityInfo.id },
         } as any);
     };
@@ -115,7 +115,7 @@ export default function CommunityDetailScreen() {
                     <View style={styles.header}>
                         <TouchableOpacity
                             style={styles.backButton}
-                            onPress={() => router.replace("../../(screen)")}
+                            onPress={() => router.replace("../../(screen)/(community)/")}
                             activeOpacity={0.7}
                         >
                             <Text style={styles.backArrow}>←</Text>

@@ -56,7 +56,8 @@ export const chatStyle = StyleSheet.create({
         borderRadius: 22,
         marginHorizontal: 20,
         padding: 16,
-        marginBottom: 12,
+        marginBottom: 17,
+        marginTop: 5,
         shadowColor: '#000',
         shadowOpacity: 0.05,
         shadowRadius: 8,
@@ -69,6 +70,7 @@ export const chatStyle = StyleSheet.create({
         borderRadius: 27,
         alignItems: 'center',
         justifyContent: 'center',
+        marginRight: 10
     },
 
     profileText: {
